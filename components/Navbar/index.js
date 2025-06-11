@@ -11,7 +11,12 @@ const Navbar = () => {
         <div className="md:hidden px-5 py-2 flex justify-between items-center">
           <div className="w-[42%] ">
             <div className="w-[100%] max-w-52 aspect-[3/1] relative">
-              <Image src="/images/logo.png" alt="대한생활체육회 로고" fill />
+              <Image
+                src="/images/logo.png"
+                alt="대한생활체육회 로고"
+                width={300}
+                height={200}
+              />
             </div>
           </div>
           <MobileNavbar />

@@ -3,6 +3,7 @@ import Header from "./components/Header";
 import MainTopics from "./components/MainTopics";
 import GoTo from "./components/GoTo";
 import Video from "./components/Video";
+import Footer from "@/components/Footer";
 export default function Home() {
   return (
     <>
@@ -17,6 +18,7 @@ export default function Home() {
           <MainTopics />
         </div>
       </main>
+      <Footer />
     </>
   );
 }

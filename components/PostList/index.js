@@ -56,8 +56,8 @@ const PostList = async ({ category, page = 1, search = "" }) => {
             className=" border border-gray-300 rounded hover:shadow-xl hover:border-blue-700 hover:text-blue-700 transition cursor-pointer mb-2"
           >
             <Link href={`/notice/post/${post.id}`}>
-              <article className="flex justify-between items-center p-4">
-                <h2 className="text-xl font-semibold leading-tight line-clamp-2">
+              <article className="md:flex justify-between items-center p-4 break-keep">
+                <h2 className="text-lg md:text-xl font-semibold leading-tight line-clamp-2">
                   {post.title}
                 </h2>
                 <p className="text-sm text-gray-500 mt-1">
