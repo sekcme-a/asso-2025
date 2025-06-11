@@ -11,8 +11,8 @@ const FooterSetting = () => {
     location: "",
     phone: "",
     mail: "",
-    rightTitle: "",
-    rightText: "",
+    // rightTitle: "",
+    // rightText: "",
   });
 
   const [saving, setSaving] = useState(false);
@@ -71,7 +71,7 @@ const FooterSetting = () => {
   if (loading) return <Loader />;
   return (
     <div className="p-10 space-y-4">
-      <p className="font-bold text-lg">좌측 푸터</p>
+      {/* <p className="font-bold text-lg">좌측 푸터</p> */}
       <TextField
         name="leftText"
         label="왼쪽 텍스트"
@@ -84,7 +84,6 @@ const FooterSetting = () => {
         rows={6}
         placeholder="왼쪽 텍스트를 입력하세요."
       />
-      <p className="font-bold text-lg mt-3">중간 푸터</p>
       <TextField
         name="location"
         label="주소"
@@ -112,7 +111,7 @@ const FooterSetting = () => {
         onChange={handleChange}
         size="small"
       />
-      <p className="font-bold text-lg mt-3">우측 푸터</p>
+      {/* <p className="font-bold text-lg mt-3">우측 푸터</p>
       <TextField
         name="rightTitle"
         label="오른쪽 타이틀"
@@ -132,7 +131,7 @@ const FooterSetting = () => {
         size="small"
         multiline
         rows={3}
-      />
+      /> */}
       <Button
         variant="contained"
         color="primary"

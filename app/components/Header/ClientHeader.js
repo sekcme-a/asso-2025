@@ -18,7 +18,7 @@ const ClientHeader = () => {
         className="absolute inset-0 z-[-1]"
       >
         <Image
-          src={`/images/background/${IMAGES[0]}`}
+          src={`/public/images/background/${IMAGES[0]}`}
           alt="배경 이미지"
           fill
           objectFit="cover"
