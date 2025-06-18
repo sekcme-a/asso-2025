@@ -13,7 +13,7 @@ const Footer = async () => {
 
   return (
     <footer
-      className="mt-32 bg-gray-800 text-white py-8 px-10 md:px-20"
+      className="mt-32 bg-gray-800 text-white py-8 px-10 md:px-32"
       aria-label="사이트 푸터"
     >
       <div className="flex flex-col md:flex-row justify-between items-end gap-8 h-full relative ">

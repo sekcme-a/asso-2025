@@ -6,3 +6,23 @@
     text-shadow: none;
   }
 }
+
+.ql-editor p {
+  font-size: 1.05rem;
+}
+/* 중심 정렬된 단락 내 이미지도 block 요소로 만들어 중앙 정렬되도록 */
+.ql-align-center img {
+  display: block;
+  margin: 0 auto;
+}
+
+.ql-snow.ql-disabled {
+  border: none !important;
+}
+
+.ql-snow .ql-editor blockquote {
+  border-left: 4px solid #ccc;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  padding-left: 16px;
+}

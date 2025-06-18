@@ -75,12 +75,12 @@ const MobileNavbar = () => {
                         animate={{ opacity: 1, height: "auto" }}
                         exit={{ opacity: 0, height: 0 }}
                         transition={{ duration: 0.3 }}
-                        className="overflow-hidden mt-1 ml-3 font-semibold text-base"
+                        className="overflow-hidden mt-2 ml-3 font-semibold text-base"
                       >
                         {group.items.map((item, index) => (
                           <li
                             key={index}
-                            className="py-1"
+                            className="py-2"
                             onClick={(e) => {
                               e.stopPropagation(); // 메뉴 닫힘 방지
                               setIsOpen(false);

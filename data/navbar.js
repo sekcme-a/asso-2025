@@ -68,6 +68,14 @@ export const NAVBAR_ITEM = [
         link: "/notice/video/1",
       },
       {
+        text: "대회신청",
+        link: "/notice/apply/1",
+      },
+      {
+        text: "대회/행사일정",
+        link: "/notice/schedule/1",
+      },
+      {
         text: "자료실",
         link: "/notice/reference/1",
       },

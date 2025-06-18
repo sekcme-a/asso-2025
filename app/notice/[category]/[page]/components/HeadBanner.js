@@ -19,14 +19,14 @@ const HeadBanner = ({ category }) => {
       >
         <div className="w-full">
           {/* Desktop Title */}
-          <h1 className="text-white font-semibold text-5xl text-start w-full hidden md:block">
+          <p className="text-white font-semibold text-5xl text-start w-full hidden md:block">
             알림마당
-          </h1>
+          </p>
 
           {/* Mobile Title */}
-          <h2 className="text-white font-semibold text-3xl text-center md:hidden w-full">
+          <p className="text-white font-semibold text-3xl text-center md:hidden w-full">
             {sortedItems[0]?.text}
-          </h2>
+          </p>
 
           {/* Desktop Navigation */}
           <nav

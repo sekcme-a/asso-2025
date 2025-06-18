@@ -10,13 +10,16 @@ const Navbar = () => {
       <nav aria-label="Main Navigation" className=" relative z-50 w-[100vw]">
         <div className="md:hidden px-5 py-2 flex justify-between items-center">
           <div className="w-[42%] ">
-            <div className="w-[100%] max-w-52 aspect-[3/1] relative">
-              <Image
-                src="/images/logo.png"
-                alt="대한생활체육회 로고"
-                width={300}
-                height={200}
-              />
+            <div className="w-[100%] max-w-52 aspect-[3/1] relative cursor-pointer">
+              <Link href="/">
+                <Image
+                  src="/images/logo.png"
+                  alt="대한생활체육회 로고"
+                  width={300}
+                  height={200}
+                  className="cursor-pointer"
+                />
+              </Link>
             </div>
           </div>
           <MobileNavbar />
@@ -26,8 +29,10 @@ const Navbar = () => {
          items-stretch relative z-30"
         >
           <div className="w-[35%] relative z-30 bg-white flex items-center">
-            <div className="w-[100%] max-w-44 aspect-[3/1] relative">
-              <Image src="/images/logo.png" alt="대한생활체육회 로고" fill />
+            <div className="w-[100%] max-w-44 aspect-[3/1] relative cursor-pointer">
+              <Link href="/">
+                <Image src="/images/logo.png" alt="대한생활체육회 로고" fill />
+              </Link>
             </div>
           </div>
           <ul className="text-lg font-semibold flex-1 flex h-full bg-white group/nav ">

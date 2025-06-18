@@ -8,7 +8,7 @@ const PcLeftNavbar = ({ group, category }) => {
   return (
     <>
       <div className="h-20 flex justify-center items-center bg-blue-500 rounded-md ">
-        <h3 className="text-xl text-white">{group}</h3>
+        <div className="text-xl text-white">{group}</div>
       </div>
 
       <ul className="mt-3 rounded-md border-[1px] border-gray-300">

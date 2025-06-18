@@ -14,6 +14,8 @@ function findMenuTitle(menuList, pathname) {
   let exactMatch = null;
   let partialMatch = null;
 
+  if (pathname.includes("/post/")) return "게시글 편집";
+
   for (const item of menuList) {
     if (item.link && item.link === cleanPath) {
       exactMatch = item.text;
