@@ -26,3 +26,15 @@
   margin-top: 5px;
   padding-left: 16px;
 }
+
+.ql-snow iframe {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+/* ✅ md 이상일 때 (예: Tailwind 기준 md = 768px) */
+@media (min-width: 768px) {
+  .ql-snow iframe {
+    width: 70%;
+  }
+}

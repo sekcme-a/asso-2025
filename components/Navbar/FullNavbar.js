@@ -8,7 +8,7 @@ const FullNavbar = () => {
       className="flex z-50 relative bg-white w-[100vw] border-y-[1px] border-y-[#ff7300] 
     px-5 lg:px-20"
     >
-      <div className="w-[35%] flex items-end flex-col py-3 pr-7">
+      <div className="w-[35%] flex items-end flex-col py-6 pr-7">
         <p
           className=" text-end text-base break-keep
         border-r-[#ff7300] border-r-2 pr-2"

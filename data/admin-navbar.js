@@ -21,6 +21,41 @@ export const MENU = [
     ],
   },
   {
+    text: "체육회소개 관리",
+    items: [
+      {
+        text: "설립목적 관리",
+        link: "/info/purpose",
+      },
+      {
+        text: "임원 관리",
+        link: "/info/status/position",
+      },
+    ],
+  },
+  {
+    text: "단체소개 관리",
+    items: [
+      {
+        text: "전국체육회현황",
+        link: "/group/nation",
+      },
+      {
+        text: "국제체육회현황",
+        link: "/group/internation",
+      },
+      {
+        text: "종목별운영현황",
+        link: "/group/sports",
+      },
+      {
+        text: "산하단체",
+        link: "/group/sanha",
+      },
+    ],
+  },
+
+  {
     text: "알림마당 관리",
     items: [
       {
@@ -52,5 +87,9 @@ export const MENU = [
         link: "/notice/reference/1",
       },
     ],
+  },
+  {
+    text: "협력기관 관리",
+    link: "/mou",
   },
 ];

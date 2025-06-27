@@ -1,10 +1,18 @@
 import Link from "next/link";
 
-const Images = ({ posts, isAdmin, page, isYoutubeThumbnail }) => {
+const Images = ({
+  posts,
+  isAdmin,
+  page,
+  isYoutubeThumbnail,
+  customGridCols,
+}) => {
   return (
     <ul
       className={`mt-6 md:mt-6 grid gap-3 ${
-        isYoutubeThumbnail
+        customGridCols
+          ? customGridCols
+          : isYoutubeThumbnail
           ? "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"
           : "grid-cols-2 md:grid-cols-3 lg:grid-cols-4"
       }`}

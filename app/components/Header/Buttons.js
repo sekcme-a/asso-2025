@@ -16,15 +16,16 @@ const Buttons = ({ size, isUser }) => {
       setIsLogingOut(true);
       await supabase.auth.signOut();
       setIsLogingOut(false);
-      router.replace("/");
+      // router.replace(router.asPath);
+      window.location.reload();
     } else router.push("/auth/login");
   };
   return (
-    <>
-      <Button
+    <div className="mt-5 md:mt-7">
+      {/* <Button
         variant="contained"
         fullWidth
-        className="mt-5 md:mt-7 font-bold"
+        className="font-bold"
         sx={{
           backgroundColor: "#6573c3", // #3f50b5보다 밝은 파란색
           "&:hover": {
@@ -34,7 +35,7 @@ const Buttons = ({ size, isUser }) => {
         size={size}
       >
         정회원 혜택 보러가기
-      </Button>
+      </Button> */}
       <Button
         variant="contained"
         fullWidth
@@ -45,7 +46,7 @@ const Buttons = ({ size, isUser }) => {
       >
         {isUser ? "로그아웃" : isLogingOut ? "로그아웃 중" : "로그인"}
       </Button>
-    </>
+    </div>
   );
 };
 

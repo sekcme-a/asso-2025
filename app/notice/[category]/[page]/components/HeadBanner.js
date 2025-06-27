@@ -2,12 +2,16 @@ import { NAVBAR_ITEM } from "@/data/navbar";
 import Link from "next/link";
 import MobileSelectCategory from "./MobileSelectCategory";
 
-const HeadBanner = ({ category }) => {
-  const noticeGroup = NAVBAR_ITEM.find((group) => group.text === "알림마당");
+const HeadBanner = ({ category, groupText = "알림마당" }) => {
+  const noticeGroup = NAVBAR_ITEM.find((group) => group.text === groupText);
   const noticeGroupItems = noticeGroup?.items || [];
   const sortedItems = [
-    ...noticeGroupItems.filter((item) => item.link.includes(category)),
-    ...noticeGroupItems.filter((item) => !item.link.includes(category)),
+    ...noticeGroupItems.filter((item) =>
+      item.link.split("/").includes(category)
+    ),
+    ...noticeGroupItems.filter(
+      (item) => !item.link.split("/").includes(category)
+    ),
   ];
 
   return (
@@ -20,7 +24,7 @@ const HeadBanner = ({ category }) => {
         <div className="w-full">
           {/* Desktop Title */}
           <p className="text-white font-semibold text-5xl text-start w-full hidden md:block">
-            알림마당
+            {groupText}
           </p>
 
           {/* Mobile Title */}

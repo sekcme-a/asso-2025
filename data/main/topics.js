@@ -4,13 +4,13 @@ export const DEFAULT_TOPICS = [
     content:
       "대한생활체육회의 정회원이 되시면 다양한 제휴 혜택을 누릴 수 있습니다.\n다양한 제휴 혜택을 확인하고 지금 바로 가입하세요!",
     images: ["/images/main/topic-1.png"],
-    url: "/",
+    // url: "/",
   },
   {
     title: "세계생활체육연맹(TAFISA) 정식 등록",
     content: `"스포츠가 복지다"란 슬로건으로 지난 2021년 설립된 (사)대한생활체육회가 전 세계 생활체육 대표들의 모임인 세계생활체육연맹(TAFISA) 제 28차 총회에서 정회원으로 승인받았습니다.`,
     images: ["/images/main/topic-2.png"],
-    url: "/",
+    // url: "/",
   },
   {
     title: "대한생활체육회 언론보도",

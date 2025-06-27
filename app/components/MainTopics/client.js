@@ -58,7 +58,7 @@ const MainTopicsClient = ({ blocks }) => {
         {/* 오른쪽 이미지 영역 */}
         <div className="flex-1 relative flex items-center justify-center">
           {/* 고정된 크기 + 비율 유지 */}
-          <div className="relative w-[70%] aspect-[1/1]">
+          <div className="relative w-[80%] aspect-[1/1]">
             {topics.map((block, index) => (
               <Image
                 key={index}

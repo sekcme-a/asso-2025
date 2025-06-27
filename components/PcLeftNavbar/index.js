@@ -13,7 +13,7 @@ const PcLeftNavbar = ({ group, category }) => {
 
       <ul className="mt-3 rounded-md border-[1px] border-gray-300">
         {noticeGroupItems.map((item, index) => {
-          const isActive = item.link.includes(category);
+          const isActive = item.link.split("/").includes(category);
           const isLast = index === noticeGroupItems.length - 1;
 
           return (

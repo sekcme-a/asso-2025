@@ -6,8 +6,8 @@ import { NAVBAR_ITEM } from "@/data/navbar";
 
 const Navbar = () => {
   return (
-    <header>
-      <nav aria-label="Main Navigation" className=" relative z-50 w-[100vw]">
+    <header className="sticky top-0 left-0 z-50 bg-white">
+      <nav aria-label="Main Navigation" className="relative z-50 w-[100vw]">
         <div className="md:hidden px-5 py-2 flex justify-between items-center">
           <div className="w-[42%] ">
             <div className="w-[100%] max-w-52 aspect-[3/1] relative cursor-pointer">

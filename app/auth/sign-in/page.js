@@ -31,11 +31,16 @@ export default function SignUpPage() {
   const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    if (e.target.name === "birth" && e.target.value.length > 6) return;
+    if (e.target.name === "phone") {
+      const cleaned = e.target.value.replace(/[^0-9]/g, ""); // 숫자 이외 제거
+      setForm((prev) => ({ ...prev, [e.target.name]: cleaned }));
+    } else {
+      setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+    }
   };
 
   const handleError = (message) => {
-    // alert(message);
     setError(message);
   };
 
@@ -43,8 +48,7 @@ export default function SignUpPage() {
     setError("");
     const { email, password, confirmPassword, name, birth, phone } = form;
 
-    // === ✅ 필수 입력 검증 ===
-    if (!email || !password || !confirmPassword || !name || !birth || !phone) {
+    if (!password || !confirmPassword || !name || !birth || !phone) {
       handleError("모든 항목을 입력해주세요.");
       return;
     }
@@ -70,11 +74,9 @@ export default function SignUpPage() {
     const dd = parseInt(birth.slice(4, 6), 10);
 
     let fullYear;
-    if (yy >= 0 && yy <= 49) {
-      fullYear = 2000 + yy;
-    } else if (yy >= 50 && yy <= 99) {
-      fullYear = 1900 + yy;
-    } else {
+    if (yy >= 0 && yy <= 49) fullYear = 2000 + yy;
+    else if (yy >= 50 && yy <= 99) fullYear = 1900 + yy;
+    else {
       handleError("올바르지 않은 생년월일입니다.");
       return;
     }
@@ -90,17 +92,24 @@ export default function SignUpPage() {
       return;
     }
 
-    const { data, error } = await supabase.auth.signUp({
-      email,
+    // 전화번호를 이메일처럼 사용 (로그인용)
+    const fakeEmail = `${phone}@phone.local`;
+
+    const { data, error: signUpError } = await supabase.auth.signUp({
+      email: fakeEmail,
       password,
       options: {
-        emailRedirectTo: undefined,
-        data: { name, birth, phone },
+        data: {
+          email, // 실제 이메일을 user_metadata에 저장
+          name,
+          phone,
+          birth,
+        },
       },
     });
 
-    if (error) {
-      handleError(error.message);
+    if (signUpError) {
+      handleError(signUpError.message);
       return;
     }
 
@@ -138,14 +147,15 @@ export default function SignUpPage() {
 
         <TextField
           fullWidth
-          label="이메일"
-          name="email"
-          value={form.email}
+          label={`전화번호 ('-' 없이 입력)`}
+          name="phone"
+          value={form.phone}
           onChange={handleChange}
+          placeholder="01012345678"
         />
-        <p className="text-sm mt-0.5">*실제 사용중인 이메일을 입력해주세요.</p>
-        <p className="text-xs leading-tight mb-4">
-          *비밀번호 분실 시 해당 이메일로 비밀번호를 찾을 수 있습니다.
+        <p className="text-sm mt-0.5 mb-4">
+          *실제 전화번호를 입력해주세요. 해당 전화번호로 모든 서비스가
+          제공됩니다.
         </p>
 
         <TextField
@@ -204,23 +214,24 @@ export default function SignUpPage() {
         />
         <TextField
           fullWidth
-          label="전화번호"
-          name="phone"
-          value={form.phone}
-          onChange={handleChange}
-          placeholder="01012345678"
-        />
-        <p className="text-sm mt-0.5 mb-4">
-          *전화번호를 통해 모든 회원 서비스가 제공됩니다.
-        </p>
-        <TextField
-          fullWidth
           label="생년월일 (예: 830520)"
           name="birth"
           value={form.birth}
           onChange={handleChange}
-          className="mb-6"
+          className="mb-4"
         />
+
+        <TextField
+          fullWidth
+          label="이메일"
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+        />
+        <p className="text-sm mt-0.5">*실제 사용 중인 이메일을 입력해주세요.</p>
+        <p className="text-xs leading-tight mb-4">
+          *비밀번호 분실 시 해당 이메일로 비밀번호를 찾을 수 있습니다.
+        </p>
 
         <Collapse in={!!error}>
           <Alert severity="error" sx={{ mb: 1 }} onClose={() => setError("")}>
@@ -232,7 +243,7 @@ export default function SignUpPage() {
           variant="contained"
           fullWidth
           onClick={handleRegister}
-          className="bg-blue-600 hover:bg-blue-700"
+          className="bg-blue-600 hover:bg-blue-700 mt-2"
         >
           가입하기
         </Button>

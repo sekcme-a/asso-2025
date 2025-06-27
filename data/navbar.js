@@ -83,11 +83,11 @@ export const NAVBAR_ITEM = [
   },
   {
     text: "협력기관",
-    link: "mou/mou",
+    link: "/mou/mou",
     items: [
       {
         text: "협력기관",
-        link: "mou/mou",
+        link: "/mou/mou",
       },
     ],
   },
@@ -98,6 +98,10 @@ export const NAVBAR_ITEM = [
       {
         text: "후원안내",
         link: "/support",
+      },
+      {
+        text: "후원확인",
+        link: "/notice/sup/1",
       },
     ],
   },

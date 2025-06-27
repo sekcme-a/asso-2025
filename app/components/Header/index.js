@@ -6,7 +6,7 @@ const Header = () => {
 
   return (
     <>
-      <div className="w-full aspect-[3/2] md:aspect-[2/1] lg:aspect-[3/1] relative overflow-hidden">
+      <div className="w-full aspect-[3/2] md:aspect-[2/1] lg:aspect-[3/1] overflow-hidden relative">
         <ClientHeader />
       </div>
       <LoginMobile />

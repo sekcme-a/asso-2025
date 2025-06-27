@@ -13,15 +13,15 @@ const Footer = async () => {
 
   return (
     <footer
-      className="mt-32 bg-gray-800 text-white py-8 px-10 md:px-32"
+      className="bg-gray-800 text-white py-8 px-10 md:px-32"
       aria-label="사이트 푸터"
     >
       <div className="flex flex-col md:flex-row justify-between items-end gap-8 h-full relative ">
         {/* 회사 정보 영역 */}
         <section className="flex-2" aria-label="기관 정보">
-          <h2 className="text-3xl font-bold text-center md:text-start">
+          <span className="text-3xl font-bold text-center md:text-start">
             대한생활체육회
-          </h2>
+          </span>
           <address className="not-italic text-sm whitespace-pre-line break-keep mt-4 text-center md:text-start">
             {footerData.leftText && <p>{footerData.leftText}</p>}
             {footerData.location && <p>주소: {footerData.location}</p>}
@@ -47,7 +47,7 @@ const Footer = async () => {
         </section>
 
         {/* 정책 링크 영역 */}
-        <nav className="flex-1 w-full" aria-label="법적 고지 및 정책">
+        {/* <nav className="flex-1 w-full" aria-label="법적 고지 및 정책">
           <ul className="text-end flex items-center justify-center w-full md:justify-end text-sm md:text-base">
             <li className="px-3">
               <Link href="/terms">이용약관</Link>
@@ -57,7 +57,7 @@ const Footer = async () => {
               <Link href="/privacy">개인정보처리방침</Link>
             </li>
           </ul>
-        </nav>
+        </nav> */}
       </div>
     </footer>
   );

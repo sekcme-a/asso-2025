@@ -38,7 +38,8 @@ const Video = () => {
   };
 
   return (
-    <div
+    <section
+      aria-label="대한생활체육회 소개 영상"
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
       className="
@@ -59,7 +60,7 @@ const Video = () => {
         loop={true}
         className="!z-[1] !cursor-pointer"
       />
-    </div>
+    </section>
   );
 };
 

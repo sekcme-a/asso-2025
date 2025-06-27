@@ -38,6 +38,7 @@ const MobileSelectCategory = ({ sortedItems }) => {
           {sortedItems.map((item, index) => (
             <li key={item.link} className="py-1.5">
               <Link
+                onClick={() => setIsOpen(false)}
                 href={item.link}
                 className={`block font-semibold ${
                   index === 0 ? "text-blue-800" : "text-gray-800"

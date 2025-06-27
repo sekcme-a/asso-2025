@@ -29,14 +29,14 @@ const ClientHeader = () => {
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ delay: 0.8, duration: 1 }}
+        transition={{ delay: 0.5, duration: 1 }}
         className="absolute w-full h-full z-0 flex justify-between items-center md:px-[5%] lg:px-[13%] bg-[rgba(218,218,218,0.32)] backdrop-blur-xs"
       >
         {/* 텍스트 애니메이션 */}
         <motion.div
           initial={{ x: -50, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
-          transition={{ delay: 1, duration: 1 }}
+          transition={{ delay: 0.7, duration: 1 }}
           className="flex-1 text-center md:text-left z-10 relative"
         >
           <p className="text-xl md:text-3xl font-bold">국민의 건강과</p>
@@ -53,7 +53,7 @@ const ClientHeader = () => {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.7, duration: 0.8 }}
+          transition={{ delay: 0.7, duration: 0.8 }}
         >
           <LoginPc />
         </motion.div>
