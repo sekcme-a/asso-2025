@@ -22,11 +22,8 @@ const Images = ({
 
         let src = null;
         if (!isYoutubeThumbnail) {
-          // 1) firebase 스토리지 이미지 URL 추출 시도
-          const firebaseMatch = content.match(
-            /https:\/\/firebasestorage\.googleapis\.com\/[^"]+/
-          );
-          src = firebaseMatch?.[0] ?? null;
+          const imgMatch = content.match(/<img[^>]+src="([^"]+)"/);
+          src = imgMatch?.[1] ?? null;
         } else {
           // 2) 유튜브 iframe src 추출 시도
           const iframeMatch = content.match(/<iframe[^>]+src="([^"]+)"/);

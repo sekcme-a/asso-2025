@@ -2,7 +2,6 @@
 
 import Script from "next/script";
 import { useState } from "react";
-import { useEffect } from "react";
 
 export default function SubscribeButton({ user }) {
   const [text, setText] = useState("");
