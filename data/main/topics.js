@@ -1,6 +1,6 @@
 export const DEFAULT_TOPICS = [
   {
-    title: "대생체 정회원 제휴 혜택",
+    title: "대한생활체육회 정회원혜택",
     content:
       "대한생활체육회의 정회원이 되시면 다양한 제휴 혜택을 누릴 수 있습니다.\n다양한 제휴 혜택을 확인하고 지금 바로 가입하세요!",
     images: ["/images/main/topic-1.png"],

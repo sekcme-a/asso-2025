@@ -4,7 +4,7 @@ const Mou = () => {
   return (
     <div className="p-10">
       <EditableBlocks
-        label="협력기관"
+        label="협력업체"
         bucket="public-bucket"
         path="admin/page-settings/mou"
         table="page_settings"

@@ -82,11 +82,11 @@ export const NAVBAR_ITEM = [
     ],
   },
   {
-    text: "협력기관",
+    text: "협력업체",
     link: "/mou/mou",
     items: [
       {
-        text: "협력기관",
+        text: "협력업체",
         link: "/mou/mou",
       },
     ],

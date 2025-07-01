@@ -4,7 +4,7 @@ import { createMetadata } from "@/utils/metadata";
 
 export async function generateMetadata() {
   return createMetadata({
-    title: "협력기관",
+    title: "협력업체",
     description: "대한생활체육회와 협력하고있는 기관들을 소개합니다.",
     url: "/mou/mou",
   });
@@ -12,7 +12,7 @@ export async function generateMetadata() {
 
 const Mou = () => {
   return (
-    <Layout category="mou" groupText="협력기관" title="협력기관">
+    <Layout category="mou" groupText="협력업체" title="협력업체">
       <MouList />
     </Layout>
   );

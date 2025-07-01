@@ -89,7 +89,7 @@ export const MENU = [
     ],
   },
   {
-    text: "협력기관 관리",
+    text: "협력업체 관리",
     link: "/mou",
   },
 ];
