@@ -53,7 +53,7 @@ const Status = async () => {
                 <p className="font-semibold text-lg">{position.position}</p>
               </div>
               <div className="flex py-2 px-2 flex-col lg:flex-row items-center gap-3">
-                {/* <div className="w-[25%] min-w-24 max-h-28 aspect-square relative mr-2 ">
+                <div className="w-[25%] min-w-24 max-h-28 aspect-square relative mr-2 ">
                   <Image
                     src={member.images[0]}
                     alt={member.name}
@@ -61,7 +61,7 @@ const Status = async () => {
                     objectFit="cover"
                     className="object-cover rounded-md"
                   />
-                </div> */}
+                </div>
                 <div className="flex flex-1 w-full">
                   <div className="mr-4 font-semibold ">
                     <p className="">성명</p>

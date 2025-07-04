@@ -26,7 +26,7 @@ const GroupList = async ({ type }) => {
               </header>
 
               <div className="flex items-start mt-4 gap-5">
-                {/* <div className="w-[20%] aspect-square relative">
+                <div className="w-[20%] aspect-square relative">
                   <Image
                     src={group.images[0]}
                     alt={`${group.groupName} 단체 사진`}
@@ -34,7 +34,7 @@ const GroupList = async ({ type }) => {
                     style={{ objectFit: "cover" }}
                     className="rounded-lg"
                   />
-                </div> */}
+                </div>
 
                 <div className="flex-1 flex gap-x-3">
                   <div className="font-bold text-sm sm:text-base">
