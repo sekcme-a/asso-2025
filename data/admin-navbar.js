@@ -86,6 +86,10 @@ export const MENU = [
         text: "자료실 관리",
         link: "/notice/reference/1",
       },
+      {
+        text: "후원확인 관리",
+        link: "/notice/support/1",
+      },
     ],
   },
   {

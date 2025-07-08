@@ -53,7 +53,7 @@ const PostList = async ({
     <>
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl md:text-4xl font-bold">
-          {target?.text || "게시글"}
+          {category === "support" ? "후원확인" : target?.text || "게시글"}
         </h1>
         <p className="md:hidden text-sm">총 {count || 0}개의 게시글</p>
       </div>
