@@ -11,7 +11,15 @@ const Partners = async () => {
 
   return (
     <section className="mt-10 ">
-      <PartnersCarousel data={data.data} />
+      <PartnersCarousel
+        data={[
+          {
+            images: ["/images/logo-tax.jpg"],
+            url: "https://www.nts.go.kr/nts/main.do",
+          },
+          ...data.data,
+        ]}
+      />
     </section>
   );
 };
