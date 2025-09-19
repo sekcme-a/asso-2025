@@ -40,6 +40,16 @@ const Buttons = ({ size, isUser }) => {
         variant="contained"
         fullWidth
         className="mt-2 font-bold"
+        color="success"
+        onClick={() => window.open("https://www.ksportshop.co.kr/", "_blank")}
+        size={size}
+      >
+        대한생활체육회 복지몰
+      </Button>
+      <Button
+        variant="contained"
+        fullWidth
+        className="mt-2 font-bold"
         onClick={handleLoginOut}
         size={size}
         disabled={isLogingOut}
