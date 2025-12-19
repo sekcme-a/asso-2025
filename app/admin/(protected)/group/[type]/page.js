@@ -21,6 +21,7 @@ const Group = ({ params }) => {
             multiline: true,
             minRows: 4,
           },
+          { name: "url", label: "홈페이지 링크 (https://포함)", type: "text" },
           { name: "images", label: "이미지 업로드", type: "image", maxMB: 1 },
         ]}
       />

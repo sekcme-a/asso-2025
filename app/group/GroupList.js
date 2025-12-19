@@ -1,4 +1,5 @@
 import { createServerSupabaseClient } from "@/utils/supabase/server";
+import { Button } from "@mui/material";
 import Image from "next/image";
 
 const GroupList = async ({ type }) => {
@@ -26,6 +27,7 @@ const GroupList = async ({ type }) => {
               </header>
 
               <div className="flex items-start mt-4 gap-5">
+                {/* 이미지 영역 */}
                 <div className="w-[20%] aspect-square relative">
                   <Image
                     src={group.images[0]}
@@ -36,17 +38,38 @@ const GroupList = async ({ type }) => {
                   />
                 </div>
 
-                <div className="flex-1 flex gap-x-3">
-                  <div className="font-bold text-sm sm:text-base">
-                    <dt>회 장</dt>
-                    <dt>프로필</dt>
+                {/* 정보 및 버튼 영역 */}
+                <div className="flex-1 flex flex-col gap-2">
+                  <div className="flex gap-x-3">
+                    <div className="font-bold text-sm sm:text-base">
+                      <dt>회 장</dt>
+                      <dt>프로필</dt>
+                    </div>
+                    <div className="text-sm sm:text-base flex-1">
+                      <dd>{group.name}</dd>
+                      <dd className="whitespace-pre-line leading-snug">
+                        {group.profile}
+                      </dd>
+                    </div>
                   </div>
-                  <div className="text-sm sm:text-base flex-1">
-                    <dd>{group.name}</dd>
-                    <dd className="whitespace-pre-line leading-snug">
-                      {group.profile}
-                    </dd>
-                  </div>
+
+                  {/* 추가된 버튼 영역 */}
+                  {group.url && (
+                    <div className="mt-1">
+                      <Button
+                        variant="outlined"
+                        color="primary"
+                        href={group.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="self-start mt-2 min-w-[90px]"
+                        size="small" // 텍스트와 균형을 맞추기 위해 small 권장
+                        fullWidth
+                      >
+                        홈페이지로 이동
+                      </Button>
+                    </div>
+                  )}
                 </div>
               </div>
             </article>
