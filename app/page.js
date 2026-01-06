@@ -8,6 +8,8 @@ import Notices from "./components/Notices";
 import PhotoZone from "./components/PhotoZone";
 import VideoZone from "./components/VideoZone";
 import Partners from "./components/Partners";
+import Image from "next/image";
+import BannerZone from "./components/BannerZone";
 export default function Home() {
   return (
     <>
@@ -23,6 +25,9 @@ export default function Home() {
         </div> */}
         <div className="px-5 md:px-7 lg:px-10 xl:px-24 bg-gray-100">
           <Notices />
+        </div>
+        <div className="px-5 md:px-7 lg:px-10 xl:px-24 ">
+          <BannerZone />
         </div>
         <div className="px-5 md:px-7 lg:px-10 xl:px-24 md:mb-20">
           <PhotoZone />
