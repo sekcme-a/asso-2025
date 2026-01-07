@@ -18,7 +18,7 @@ export default function BannerZone() {
       id: 1,
       src: "/images/banner/commercial/sangzo.png",
       alt: "배너1",
-      url: "#",
+      url: "http://대한생활체육회상조회.kr",
     },
   ];
 
