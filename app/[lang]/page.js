@@ -13,11 +13,9 @@ import VideoGallery from "../(korean)/zz_components/VideoGallery";
 import MainBoardFeed from "../(korean)/zz_components/MainBoardFeed";
 import Footer from "@/components/Footer";
 
-export default function Home() {
+export default function Home({ params }) {
   return (
     <main className="min-h-screen">
-      <Navbar />
-
       <HomeTop />
       <ScrollVision />
 
@@ -26,11 +24,10 @@ export default function Home() {
       <WellenessGrid />
       <MagazineNews />
 
-      <MainBoardFeed />
+      <MainBoardFeed params={params} />
       <PhotoGallery />
       <VideoGallery />
       <CTA />
-      <Footer />
     </main>
   );
 }

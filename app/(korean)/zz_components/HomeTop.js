@@ -24,14 +24,12 @@ export default function HomeTop() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1 }}
-          // 기존 클래스 그대로 유지: -skew-x-12 translate-x-20
           className="absolute top-0 right-0 w-[80%] lg:w-[60%] h-full bg-blue-50 -skew-x-12 translate-x-20"
         />
         <motion.div
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 0.5, scale: 1 }}
           transition={{ duration: 1.2 }}
-          // 기존 클래스 그대로 유지: blur-[80px] lg:blur-[100px]
           className="absolute bottom-0 left-0 lg:left-10 w-48 h-48 lg:w-72 lg:h-72 bg-blue-100 rounded-full blur-[80px] lg:blur-[100px] opacity-50"
         />
       </div>
@@ -51,31 +49,37 @@ export default function HomeTop() {
               variants={fadeInUp}
               className="inline-flex items-center gap-2 lg:gap-3 px-4 py-2 bg-blue-700/5 rounded-full mb-6 lg:mb-8"
             >
-              <span className="w-2 h-2 bg-blue-700 rounded-full animate-pulse" />
-              <span className="text-[10px] lg:text-xs font-black text-blue-700 tracking-widest uppercase break-keep">
+              <span
+                className="w-2 h-2 bg-blue-700 rounded-full animate-pulse"
+                aria-hidden="true"
+              />
+              <strong className="text-[10px] lg:text-xs font-black text-blue-700 tracking-widest uppercase break-keep">
                 {t(
                   "국민의 건강과 행복의 장을 여는",
                   "Opening the door to health and happiness",
                 )}
-              </span>
+              </strong>
             </motion.div>
 
+            {/* SEO 최적화: h1 태그 내 텍스트 결합으로 키워드 인식 강화 */}
             <motion.h1
               variants={fadeInUp}
               className="text-5xl md:text-7xl lg:text-[90px] font-black tracking-tighter leading-[1.1] lg:leading-[0.9] mb-4 lg:mb-6 text-gray-900 break-keep"
             >
-              {t("대한", "")}
-              <span className="text-blue-700 ">{t("생활체육회", "KSFAA")}</span>
+              {isEnglish ? (
+                <span className="text-blue-700">KSFAA</span>
+              ) : (
+                <>
+                  대한<span className="text-blue-700">생활체육회</span>
+                </>
+              )}
             </motion.h1>
 
             <motion.h2
               variants={fadeInUp}
               className="text-lg md:text-2xl lg:text-3xl font-black tracking-tight text-gray-800 mb-8 lg:mb-10 opacity-90 leading-tight"
             >
-              {t(
-                "Korea Sports For All Athletic Association",
-                "Korea Sports For All Athletic Association",
-              )}
+              Korea Sports For All Athletic Association
             </motion.h2>
 
             <motion.p
@@ -93,16 +97,24 @@ export default function HomeTop() {
               className="flex flex-col sm:flex-row gap-4"
             >
               <Link
-                href={isEnglish ? "/en/about/greeting" : "/about/greeting"}
+                href={isEnglish ? "/en/info/purpose" : "/info/purpose"}
+                title={t(
+                  "대한생활체육회 협회소개 보기",
+                  "View KSFAA Association Introduction",
+                )}
                 className="px-8 lg:px-12 py-5 lg:py-6 bg-gray-900 text-white rounded-full font-black text-base lg:text-lg hover:bg-blue-700 transition-all shadow-xl shadow-gray-200 text-center"
               >
-                {t("협회소개 보기", "About Association")}
+                {t("체육회소개 보기", "About Association")}
               </Link>
               <Link
-                href={isEnglish ? "/en/board/notice" : "/board/notice"}
+                href={isEnglish ? "/en/notice/media" : "/notice/media"}
+                title={t(
+                  "대한생활체육회 주요 언론보도 확인",
+                  "Check KSFAA Official News",
+                )}
                 className="px-8 lg:px-12 py-5 lg:py-6 border-2 border-gray-900 text-gray-900 rounded-full font-black text-base lg:text-lg hover:bg-gray-50 transition-all text-center"
               >
-                {t("공지사항 확인", "Check Notice")}
+                {t("언론보도 확인", "Check News")}
               </Link>
             </motion.div>
           </motion.div>
@@ -117,7 +129,11 @@ export default function HomeTop() {
             <div className="aspect-[4/3] lg:aspect-[4/5] rounded-[2.5rem] lg:rounded-[4rem] bg-zinc-200 overflow-hidden relative shadow-2xl">
               <Image
                 src="/images/home/top.webp"
-                alt="스포츠 액션"
+                // SEO 최적화: 이미지의 내용을 명확히 설명하는 alt 텍스트
+                alt={t(
+                  "활기차게 운동하는 모습 - 대한생활체육회 메인 이미지",
+                  "Active people exercising - Korea Sports For All Athletic Association Main Visual",
+                )}
                 fill
                 sizes="(max-width: 1024px) 100vw, 40vw"
                 priority

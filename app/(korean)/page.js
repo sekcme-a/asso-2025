@@ -1,7 +1,3 @@
-import Navbar from "@/components/Navbar";
-import Link from "next/link";
-import { motion } from "framer-motion";
-import Image from "next/image";
 import HomeTop from "./zz_components/HomeTop";
 import LiverStatistics from "./zz_components/LiveStatistics";
 import ScrollVision from "./zz_components/ScrollVision";
@@ -14,11 +10,9 @@ import VideoGallery from "./zz_components/VideoGallery";
 import MainBoardFeed from "./zz_components/MainBoardFeed";
 import Footer from "@/components/Footer";
 
-export default function Home() {
+export default function Home({ params }) {
   return (
     <main className="min-h-screen">
-      <Navbar />
-
       <HomeTop />
       <ScrollVision />
 
@@ -27,11 +21,10 @@ export default function Home() {
       <WellenessGrid />
       <MagazineNews />
 
-      <MainBoardFeed />
+      <MainBoardFeed params={params} />
       <PhotoGallery />
       <VideoGallery />
       <CTA />
-      <Footer />
     </main>
   );
 }

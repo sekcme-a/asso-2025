@@ -1,28 +1,35 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
 
-  // URL이 /en으로 시작하면 영어 모드로 판별
+  // 스크롤 감지 로직
+  // useEffect(() => {
+  //   const handleScroll = () => {
+  //     setScrolled(window.scrollY > 20);
+  //   };
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, []);
+
   const isEnglish = pathname.startsWith("/en");
   const lang = isEnglish ? "EN" : "KO";
 
-  // 언어 전환 로직: 기존 한국어 경로는 보존하고 /en만 붙였다 뗐다 합니다.
   const toggleLanguage = (targetLang) => {
     if (targetLang === "EN") {
       if (!isEnglish) {
-        // 한국어 -> 영어: 현재 경로 앞에 /en 추가 (단, 홈 / 인 경우 /en 으로 이동)
         const newPath = pathname === "/" ? "/en" : `/en${pathname}`;
         router.push(newPath);
       }
     } else {
       if (isEnglish) {
-        // 영어 -> 한국어: 앞의 /en 제거
         const newPath = pathname.replace(/^\/en/, "") || "/";
         router.push(newPath);
       }
@@ -30,10 +37,7 @@ export default function Navbar() {
     setIsOpen(false);
   };
 
-  // 텍스트 번역 헬퍼
   const t = (ko, en) => (isEnglish ? en : ko);
-
-  // 메뉴 클릭 시 이동할 경로를 생성하는 함수
   const getHref = (path) => (isEnglish ? `/en${path}` : path);
 
   const menuItems = [
@@ -69,18 +73,17 @@ export default function Navbar() {
       ],
     },
     {
-      title: t("알림마당", "News & Notice"), // 혹은 Information Center
+      title: t("알림마당", "News & Notice"),
       subMenu: [
-        { name: t("공지사항", "Announcements"), href: "/notice/anouncement" }, // 공적인 알림
-        { name: t("언론보도", "Press Release"), href: "/notice/media" }, // 미디어 보도 자료
-
+        { name: t("공지사항", "Announcements"), href: "/notice/anouncement" },
+        { name: t("언론보도", "Press Release"), href: "/notice/media" },
         { name: t("포토갤러리", "Photo Gallery"), href: "/notice/photo" },
         { name: t("동영상갤러리", "Video Gallery"), href: "/notice/video" },
         {
           name: t("대회/행사일정", "Event Schedule"),
           href: "/notice/schedule",
-        }, // 일정 관리
-        { name: t("자료실", "Archive"), href: "/notice/reference" }, // 혹은 Resources
+        },
+        { name: t("자료실", "Archive"), href: "/notice/reference" },
       ],
     },
     {
@@ -102,9 +105,15 @@ export default function Navbar() {
   ];
 
   return (
-    <nav className="fixed w-full z-[100] bg-white border-b border-gray-200">
+    // nav 태그에 주요 내비게이션임을 명시
+    <nav
+      aria-label={t("주요 메뉴", "Main Navigation")}
+      className={`fixed w-full z-[100] bg-white transition-all duration-300 ease-in-out ${scrolled ? "shadow-lg" : "border-b border-gray-200"}`}
+    >
       {/* Top Utility Bar */}
-      <div className="hidden lg:block bg-gray-50 border-b border-gray-100">
+      <div
+        className={`hidden lg:block bg-gray-50 border-b border-gray-100 transition-all duration-300 ease-in-out overflow-hidden ${scrolled ? "h-0 opacity-0 border-none" : "h-10 opacity-100"}`}
+      >
         <div className="max-w-7xl mx-auto px-6 h-10 flex justify-end items-center gap-6 text-[12px] font-medium text-gray-500">
           <Link
             href={getHref("/login")}
@@ -112,9 +121,14 @@ export default function Navbar() {
           >
             {t("로그인", "Login")}
           </Link>
-          <div className="flex items-center gap-2">
+          <div
+            className="flex items-center gap-2"
+            role="group"
+            aria-label={t("언어 선택", "Language Selection")}
+          >
             <button
               onClick={() => toggleLanguage("KO")}
+              aria-pressed={lang === "KO"}
               className={
                 lang === "KO"
                   ? "text-blue-600 font-bold"
@@ -123,9 +137,10 @@ export default function Navbar() {
             >
               KOR
             </button>
-            <span className="w-[1px] h-3 bg-gray-300"></span>
+            <span className="w-[1px] h-3 bg-gray-300" aria-hidden="true"></span>
             <button
               onClick={() => toggleLanguage("EN")}
+              aria-pressed={lang === "EN"}
               className={
                 lang === "EN"
                   ? "text-blue-600 font-bold"
@@ -139,55 +154,69 @@ export default function Navbar() {
       </div>
 
       <div className="max-w-7xl mx-auto px-6">
-        <div className="flex justify-between items-center h-20">
+        <div
+          className={`flex justify-between items-center transition-all duration-300 ease-in-out h-20`}
+        >
           {/* Logo */}
           <Link
             href={isEnglish ? "/en" : "/"}
-            className="flex items-center gap-3"
+            className="flex items-center gap-3 group"
+            title={t("대한생활체육회 홈", "KSFAA Home")}
           >
-            <div className="w-9 h-9 bg-blue-700 rounded-lg flex items-center justify-center text-white font-bold italic text-xl">
-              K
-            </div>
-            <div className="flex flex-col leading-tight">
-              <span className="text-lg font-extrabold tracking-tight text-gray-900">
-                {t("대한", "")}
-                <span className="text-blue-700">{t("생활체육회", "KSA")}</span>
-              </span>
-              <span className="text-[10px] text-gray-400 font-medium uppercase tracking-widest">
-                Korea Sports Association
-              </span>
+            <div
+              className={`relative transition-all duration-300 w-[180px] h-[60px]`}
+            >
+              <Image
+                src="/images/logo.png"
+                alt="대한생활체육회 (Korea Sports For All Athletic Association)"
+                fill
+                className="object-contain"
+                priority
+              />
             </div>
           </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden lg:flex items-center gap-2 h-full">
+          {/* Desktop Menu - 목록 구조로 변경하여 SEO 강화 */}
+          <ul className="hidden lg:flex items-center gap-2 h-full">
             {menuItems.map((menu) => (
-              <div
+              <li
                 key={menu.title}
                 className="group relative h-full flex items-center"
               >
-                <button className="px-5 text-[16px] font-semibold text-gray-700 group-hover:text-blue-700 transition-colors">
+                <button
+                  aria-expanded="false"
+                  aria-haspopup="true"
+                  className={`px-5 font-semibold transition-colors duration-300 text-[16px] text-gray-700 group-hover:text-blue-700`}
+                >
                   {menu.title}
                 </button>
 
-                {/* Dropdown Panel */}
-                <div className="absolute top-full left-1/2 -translate-x-1/2 w-48 bg-white border border-gray-100 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-0 translate-y-2 py-2 rounded-b-xl">
+                {/* Dropdown Panel - 시맨틱한 ul/li 구조 */}
+                <ul
+                  className={`absolute left-1/2 -translate-x-1/2 w-48 bg-white border border-gray-100 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-0 translate-y-2 py-2 rounded-b-xl ${scrolled ? "top-[64px]" : "top-[80px]"}`}
+                >
                   {menu.subMenu.map((sub) => (
-                    <Link
-                      key={sub.name}
-                      href={getHref(sub.href)}
-                      className="block px-6 py-2.5 text-[14px] text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition-colors"
-                    >
-                      {sub.name}
-                    </Link>
+                    <li key={sub.name}>
+                      <Link
+                        href={getHref(sub.href)}
+                        className="block px-6 py-2.5 text-[14px] text-gray-600 hover:bg-blue-50 hover:text-blue-700 transition-colors"
+                      >
+                        {sub.name}
+                      </Link>
+                    </li>
                   ))}
-                </div>
-              </div>
+                </ul>
+              </li>
             ))}
-          </div>
+          </ul>
 
           {/* Mobile Toggle */}
-          <button className="lg:hidden p-2" onClick={() => setIsOpen(!isOpen)}>
+          <button
+            className="lg:hidden p-2"
+            onClick={() => setIsOpen(!isOpen)}
+            aria-label={t("메뉴 열기/닫기", "Toggle Menu")}
+            aria-expanded={isOpen}
+          >
             <div
               className={`w-6 h-0.5 bg-gray-900 transition-all ${isOpen ? "rotate-45 translate-y-1.5" : "mb-1.5"}`}
             />
@@ -202,7 +231,11 @@ export default function Navbar() {
       {isOpen && (
         <div className="lg:hidden bg-white border-t border-gray-100 overflow-y-auto max-h-[calc(100vh-80px)]">
           <div className="p-6 bg-gray-100 flex justify-between items-center text-sm font-medium">
-            <Link href={getHref("/login")} className="text-gray-600">
+            <Link
+              href={getHref("/login")}
+              className="text-gray-600"
+              onClick={() => setIsOpen(false)}
+            >
               {t("로그인", "Login")}
             </Link>
             <button
@@ -212,28 +245,30 @@ export default function Navbar() {
               {isEnglish ? "한국어" : "English"}
             </button>
           </div>
-          {menuItems.map((menu) => (
-            <div
-              key={menu.title}
-              className="border-b border-gray-50 last:border-none"
-            >
-              <div className="px-6 py-4 bg-gray-50 font-bold text-gray-900">
-                {menu.title}
+          <div role="menu">
+            {menuItems.map((menu) => (
+              <div
+                key={menu.title}
+                className="border-b border-gray-50 last:border-none"
+              >
+                <div className="px-6 py-4 bg-gray-50 font-bold text-gray-900">
+                  {menu.title}
+                </div>
+                <div className="grid grid-cols-2 gap-2 p-4">
+                  {menu.subMenu.map((sub) => (
+                    <Link
+                      key={sub.name}
+                      href={getHref(sub.href)}
+                      onClick={() => setIsOpen(false)}
+                      className="px-3 py-2 text-[14px] text-gray-600 active:text-blue-700"
+                    >
+                      • {sub.name}
+                    </Link>
+                  ))}
+                </div>
               </div>
-              <div className="grid grid-cols-2 gap-2 p-4">
-                {menu.subMenu.map((sub) => (
-                  <Link
-                    key={sub.name}
-                    href={getHref(sub.href)}
-                    onClick={() => setIsOpen(false)}
-                    className="px-3 py-2 text-[14px] text-gray-600 active:text-blue-700"
-                  >
-                    • {sub.name}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       )}
     </nav>

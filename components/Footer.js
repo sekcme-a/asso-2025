@@ -1,46 +1,67 @@
 "use client";
+
 import React from "react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 
 export default function Footer() {
+  const params = useParams();
+  const isEnglish = params.lang === "en";
+
+  // 번역 헬퍼 함수
+  const t = (ko, en) => (isEnglish ? en : ko);
+
+  // 다국어 메뉴 데이터
   const footerMenu = [
     {
-      title: "체육회 소개",
+      title: t("체육회 소개", "About KSFAA"),
       links: [
-        { name: "총재 인사말", href: "/about/greeting" },
-        { name: "설립목적", href: "/about/purpose" },
-        { name: "중앙조직도", href: "/about/organization" },
-        { name: "임원현황", href: "/about/officers" },
-        { name: "오시는 길", href: "/about/location" },
+        {
+          name: t("총재 인사말", "President's Message"),
+          href: "/about/greeting",
+        },
+        { name: t("설립목적", "Mission & Purpose"), href: "/about/purpose" },
+        { name: t("중앙조직도", "Organization"), href: "/about/organization" },
+        { name: t("임원현황", "Officers"), href: "/about/officers" },
+        { name: t("오시는 길", "Location"), href: "/about/location" },
       ],
     },
     {
-      title: "단체 소개",
+      title: t("단체 소개", "Our Groups"),
       links: [
-        { name: "전국 체육회 현황", href: "/group/national" },
-        { name: "국제 체육회 현황", href: "/group/international" },
-        { name: "종목별 운영현황", href: "/group/disciplines" },
-        { name: "산하단체", href: "/group/subsidiaries" },
+        {
+          name: t("전국 체육회 현황", "National Status"),
+          href: "/group/national",
+        },
+        {
+          name: t("국제 체육회 현황", "International Status"),
+          href: "/group/international",
+        },
+        {
+          name: t("종목별 운영현황", "Disciplines"),
+          href: "/group/disciplines",
+        },
+        { name: t("산하단체", "Subsidiaries"), href: "/group/subsidiaries" },
       ],
     },
     {
-      title: "알림마당",
+      title: t("알림마당", "Notice Board"),
       links: [
-        { name: "공지사항", href: "/notice" },
-        { name: "언론보도", href: "/press" },
-        { name: "포토갤러리", href: "/gallery" },
-        { name: "동영상갤러리", href: "/video" },
-        { name: "대회신청", href: "/apply" },
-        { name: "대회/행사일정", href: "/schedule" },
-        { name: "자료실", href: "/archive" },
+        { name: t("공지사항", "Notice"), href: "/notice" },
+        { name: t("언론보도", "Press"), href: "/press" },
+        { name: t("포토갤러리", "Photo Gallery"), href: "/gallery" },
+        { name: t("동영상갤러리", "Video Gallery"), href: "/video" },
+        { name: t("대회신청", "Apply for Competition"), href: "/apply" },
+        { name: t("대회/행사일정", "Schedule"), href: "/schedule" },
+        { name: t("자료실", "Archive"), href: "/archive" },
       ],
     },
     {
-      title: "협력 및 후원",
+      title: t("협력 및 후원", "Partnership"),
       links: [
-        { name: "협력업체", href: "/partners" },
-        { name: "후원안내", href: "/support/info" },
-        { name: "후원확인", href: "/support/check" },
+        { name: t("협력업체", "Partners"), href: "/partners" },
+        { name: t("후원안내", "Sponsorship Info"), href: "/support/info" },
+        { name: t("후원확인", "Check Donation"), href: "/support/check" },
       ],
     },
   ];
@@ -53,20 +74,22 @@ export default function Footer() {
           {/* BRAND COLUMN */}
           <div className="col-span-2 lg:col-span-1">
             <h2 className="text-2xl font-black tracking-tighter mb-6">
-              대한생활체육회
+              {t("대한생활체육회", "KSFAA")}
               <span className="block text-xs font-bold text-blue-500 tracking-[0.3em] mt-2 uppercase">
                 Korea Sports For All Athletic Association
               </span>
             </h2>
             <p className="text-gray-400 text-sm font-medium leading-relaxed break-keep mb-8">
-              스포츠로 하나 되는 건강한 대한민국, <br /> 국민 모두가
-              주인공입니다.
+              {t(
+                "스포츠로 하나 되는 건강한 대한민국, 국민 모두가 주인공입니다.",
+                "A healthy Korea united through sports, where every citizen is a protagonist.",
+              )}
             </p>
           </div>
 
           {/* MENU COLUMNS */}
           {footerMenu.map((group, i) => (
-            <div key={i} className="space-y-6">
+            <nav key={i} className="space-y-6" aria-label={group.title}>
               <h3 className="text-xs font-black tracking-[0.2em] text-gray-500 uppercase">
                 {group.title}
               </h3>
@@ -74,7 +97,11 @@ export default function Footer() {
                 {group.links.map((link, j) => (
                   <li key={j}>
                     <Link
-                      href={link.href}
+                      href={isEnglish ? `/en${link.href}` : link.href}
+                      title={t(
+                        `${link.name} 페이지로 이동`,
+                        `Go to ${link.name}`,
+                      )}
                       className="text-[15px] font-bold text-gray-300 hover:text-white hover:translate-x-1 transition-all inline-block"
                     >
                       {link.name}
@@ -82,65 +109,51 @@ export default function Footer() {
                   </li>
                 ))}
               </ul>
-            </div>
+            </nav>
           ))}
         </div>
 
         {/* BOTTOM: INFO & COPYRIGHT */}
         <div className="pt-12 border-t border-white/5">
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-10">
-            <div className="space-y-4 text-xs font-bold text-gray-500 leading-relaxed">
+            <address className="not-italic space-y-4 text-xs font-bold text-gray-500 leading-relaxed">
               <div className="flex flex-wrap gap-x-6 gap-y-2">
                 <span>
-                  주소: 서울특별시 특정구 특정로 123 대한생활체육회 빌딩
+                  {t(
+                    "주소: 서울특별시 금천구 가산동 459-6 SH드림 307호",
+                    "Address: Room 307, SH Dream, 459-6 Gasan-dong, Geumcheon-gu, Seoul, South Korea",
+                  )}
                 </span>
-                <span>대표전화: 02-1234-5678</span>
-                <span>팩스: 02-1234-5679</span>
+                <span>
+                  {t("대표전화", "Tel")}:{" "}
+                  <a href="tel:02-2088-7508" className="hover:text-gray-300">
+                    02-2088-7508
+                  </a>
+                </span>
+                {/* <span>{t("팩스", "Fax")}: 02-1234-5679</span> */}
               </div>
-              {/* <div className="flex flex-wrap gap-x-6 gap-y-2">
-                <Link
-                  href="/privacy"
-                  className="text-gray-300 hover:text-blue-500"
-                >
-                  개인정보처리방침
-                </Link>
-                <Link
-                  href="/terms"
-                  className="text-gray-300 hover:text-blue-500"
-                >
-                  이용약관
-                </Link>
-                <Link
-                  href="/email-policy"
-                  className="text-gray-300 hover:text-blue-500"
-                >
-                  이메일무단수집거부
-                </Link>
-              </div> */}
-              <p className="mt-8 opacity-40 uppercase tracking-widest">
-                © 2026 대한생활체육회. ALL RIGHTS RESERVED.
-              </p>
-            </div>
 
-            {/* SNS & TOP BUTTON */}
-            {/* <div className="flex items-center gap-4">
-              <div className="flex gap-2">
-                {["FB", "IG", "YT", "B"].map((sns) => (
-                  <button
-                    key={sns}
-                    className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-[10px] font-black hover:bg-blue-600 transition-all"
-                  >
-                    {sns}
-                  </button>
-                ))}
+              <div className="pt-4">
+                <p className="opacity-40 uppercase tracking-widest">
+                  © 2026 {t("대한생활체육회", "KSFAA")}. ALL RIGHTS RESERVED.
+                </p>
               </div>
-              <button
-                onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                className="px-6 py-3 bg-white text-gray-900 rounded-full font-black text-xs hover:bg-blue-600 hover:text-white transition-all shadow-xl"
+            </address>
+
+            {/* <nav className="flex flex-wrap gap-x-6 gap-y-2 text-xs font-bold">
+              <Link
+                href={isEnglish ? "/en/privacy" : "/privacy"}
+                className="text-gray-300 hover:text-blue-500"
               >
-                TOP ↑
-              </button>
-            </div> */}
+                {t("개인정보처리방침", "Privacy Policy")}
+              </Link>
+              <Link
+                href={isEnglish ? "/en/terms" : "/terms"}
+                className="text-gray-300 hover:text-blue-500"
+              >
+                {t("이용약관", "Terms of Service")}
+              </Link>
+            </nav> */}
           </div>
         </div>
       </div>

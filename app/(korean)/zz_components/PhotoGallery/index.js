@@ -10,7 +10,7 @@ export default async function PhotoGallery() {
   // 서버에서 데이터 직접 페칭 (SEO 친화적)
   const { data: posts, error } = await supabase
     .from("posts")
-    .select("id, title, created_at, post")
+    .select("id, title, title_en, created_at, post")
     .eq("category", "photo")
     .order("created_at", { ascending: false })
     .range(0, 3);

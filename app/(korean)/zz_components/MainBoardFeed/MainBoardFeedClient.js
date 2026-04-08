@@ -4,34 +4,67 @@ import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 
-// 1. BoardItem: 개별 아이템이 위로 살짝 떠오르며 나타남
-const BoardItem = ({ item, type, isNew, formatDate, index }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 10 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ delay: index * 0.1, duration: 0.5 }}
-  >
-    <Link
-      href={`/${type}/${item.id}`}
-      className="group block py-4 md:py-5 first:pt-0"
-    >
-      {isNew && (
-        <p className="text-[11px] font-bold text-blue-600 mb-1.5 tracking-widest uppercase">
-          New
-        </p>
-      )}
-      <h4 className="text-lg font-black line-clamp-2 text-gray-800 group-hover:text-blue-600 transition-colors leading-snug break-keep">
-        {item.title}
-      </h4>
-      <p className="mt-2.5 text-xs font-medium text-gray-500">
-        {formatDate(item.created_at)}
-      </p>
-    </Link>
-  </motion.div>
-);
+// 1. BoardItem: 개별 항목 다국어 처리
+const BoardItem = ({ item, type, isNew, formatDate, index, t, isEnglish }) => {
+  // 1. 조건에 따른 속성 설정
+  const isMedia = type === "media";
 
-// 2. BoardColumn: 컬럼 자체가 순차적으로 나타남
+  // 미디어일 경우 외부 링크(item.url 등), 아닐 경우 상세 페이지 경로
+  const href = isMedia
+    ? item.news_url || ""
+    : isEnglish
+      ? `/en/post/${item.id}`
+      : `/post/${item.id}`;
+
+  // 외부 링크용 속성 (새창 열기 및 보안 설정)
+  const externalProps = isMedia
+    ? { target: "_blank", rel: "noopener noreferrer" }
+    : {};
+
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 10 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: index * 0.1, duration: 0.5 }}
+      role="listitem"
+    >
+      <Link
+        href={href}
+        {...externalProps}
+        title={
+          isEnglish
+            ? `View details of ${item.title_en || item.title}`
+            : `${item.title} 상세 보기`
+        }
+        className="group block py-4 md:py-5 first:pt-0"
+      >
+        {isNew && (
+          <strong className="text-[11px] font-bold text-blue-600 mb-1.5 tracking-widest uppercase block">
+            New
+          </strong>
+        )}
+        <h4 className="text-lg font-black line-clamp-2 text-gray-800 group-hover:text-blue-600 transition-colors leading-snug break-keep">
+          {isMedia
+            ? isEnglish
+              ? item.news_title_en || item.news_title
+              : item.news_title
+            : isEnglish
+              ? item.title_en || item.title
+              : item.title}
+        </h4>
+        <time
+          dateTime={item.created_at}
+          className="mt-2.5 text-xs font-medium text-gray-500 block"
+        >
+          {formatDate(item.created_at)}
+        </time>
+      </Link>
+    </motion.article>
+  );
+};
+
+// 2. BoardColumn: 섹션 타이틀 및 링크 다국어화
 const BoardColumn = ({
   title,
   type,
@@ -40,6 +73,7 @@ const BoardColumn = ({
   checkIfNew,
   formatDate,
   columnIndex,
+  isEnglish,
 }) => (
   <motion.div
     initial={{ opacity: 0, y: 20 }}
@@ -53,13 +87,14 @@ const BoardColumn = ({
         {title}
       </h3>
       <Link
-        href={`/${type}`}
+        href={isEnglish ? `/en/notice/${type}` : `/notice/${type}`}
+        title={isEnglish ? `${title} ${t.viewAll}` : `${title} ${t.viewAll}`}
         className="text-xs font-bold text-gray-700 hover:text-blue-600 transition-colors tracking-[0.15em]"
       >
         {t.viewAll}
       </Link>
     </div>
-    <div className="divide-y divide-gray-100">
+    <div className="divide-y divide-gray-100" role="list">
       {items.map((item, i) => (
         <BoardItem
           key={item.id}
@@ -67,7 +102,9 @@ const BoardColumn = ({
           type={type}
           isNew={checkIfNew(item.created_at)}
           formatDate={formatDate}
-          index={i} // 아이템 순서에 따른 딜레이용
+          index={i}
+          t={t}
+          isEnglish={isEnglish}
         />
       ))}
     </div>
@@ -89,8 +126,15 @@ export default function MainBoardFeedClient({ boardData, lang }) {
   const formatDate = (dateString) => {
     if (!dateString) return "";
     const date = new Date(dateString);
+    if (isEnglish) {
+      return date.toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "2-digit",
+      });
+    }
     return date
-      .toLocaleDateString(isEnglish ? "en-US" : "ko-KR", {
+      .toLocaleDateString("ko-KR", {
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
@@ -109,55 +153,63 @@ export default function MainBoardFeedClient({ boardData, lang }) {
   };
 
   return (
-    <section className="py-12 md:py-18 bg-white px-6">
+    <section
+      className="py-12 md:py-18 bg-white px-6"
+      aria-labelledby="board-feed-title"
+    >
       <div className="max-w-7xl mx-auto">
-        {/* HEADER: 제목과 바 애니메이션 */}
+        {/* HEADER */}
         <div className="mb-12 md:mb-16">
-          <motion.h2
+          <motion.h3
+            id="board-feed-title"
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="text-3xl md:text-5xl font-black tracking-tighter text-gray-900 mb-5 uppercase"
           >
             {t.latest} <span className="text-blue-600">{t.update}</span>
-          </motion.h2>
+          </motion.h3>
           <motion.div
             initial={{ width: 0 }}
-            whileInView={{ width: 80 }} // w-20 = 80px
+            whileInView={{ width: 80 }}
             viewport={{ once: true }}
             transition={{ delay: 0.4, duration: 0.8 }}
             className="h-1.5 bg-blue-600 rounded-full"
+            aria-hidden="true"
           />
         </div>
 
-        {/* BOARD GRID: 컬럼별 인덱스 부여 */}
+        {/* BOARD GRID */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 md:gap-20">
           <BoardColumn
             title={t.notice}
-            type="notice"
+            type="anouncement"
             items={boardData.notice}
             t={t}
             checkIfNew={checkIfNew}
             formatDate={formatDate}
             columnIndex={0}
+            isEnglish={isEnglish}
           />
           <BoardColumn
             title={t.press}
-            type="press"
+            type="media"
             items={boardData.press}
             t={t}
             checkIfNew={checkIfNew}
             formatDate={formatDate}
             columnIndex={1}
+            isEnglish={isEnglish}
           />
           <BoardColumn
             title={t.archive}
-            type="archive"
+            type="reference"
             items={boardData.archive}
             t={t}
             checkIfNew={checkIfNew}
             formatDate={formatDate}
             columnIndex={2}
+            isEnglish={isEnglish}
           />
         </div>
       </div>
