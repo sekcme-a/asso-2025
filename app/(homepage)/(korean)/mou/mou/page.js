@@ -1,5 +1,4 @@
 import { createMetadata } from "@/utils/metadata";
-import SubHero from "../../info/components/SubHero";
 import MouList from "./MouList";
 
 export const metadata = createMetadata({

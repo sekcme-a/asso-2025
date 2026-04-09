@@ -1,4 +1,4 @@
-import ChartPage from "@/app/(korean)/info/chart/ChartPage";
+import ChartPage from "@/app/(homepage)/(korean)/info/chart/ChartPage";
 import { createMetadata } from "@/utils/metadata";
 export const metadata = createMetadata({
   title: "Organization Chart",

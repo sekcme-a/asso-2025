@@ -1,4 +1,4 @@
-import PurposePage from "@/app/(korean)/info/purpose/PurposePage";
+import PurposePage from "@/app/(homepage)/(korean)/info/purpose/PurposePage";
 import { createMetadata } from "@/utils/metadata";
 
 export const metadata = createMetadata({

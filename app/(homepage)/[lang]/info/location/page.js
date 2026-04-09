@@ -1,4 +1,4 @@
-import LocationPage from "@/app/(korean)/info/location/LocationPage";
+import LocationPage from "@/app/(homepage)/(korean)/info/location/LocationPage";
 import { createMetadata } from "@/utils/metadata";
 
 export const metadata = createMetadata({

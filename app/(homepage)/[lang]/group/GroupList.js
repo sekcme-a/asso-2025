@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import SubHero from "@/app/(korean)/info/components/SubHero";
+import SubHero from "../../(korean)/info/components/SubHero";
 import { useParams } from "next/navigation";
 
 const GroupList = ({ type, groups }) => {

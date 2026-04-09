@@ -1,6 +1,5 @@
 import { createServerSupabaseClient } from "@/utils/supabase/server";
-import Article from "@/app/(korean)/post/[postId]/Article";
-
+import Article from "@/app/(homepage)/(korean)/post/[postId]/Article";
 export async function generateMetadata({ params }) {
   const { postId } = await params;
   const supabase = await createServerSupabaseClient();

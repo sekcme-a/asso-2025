@@ -1,5 +1,4 @@
-import SubHero from "@/app/(korean)/info/components/SubHero";
-import PostList from "@/app/(korean)/notice/components/PostList";
+import SubHero from "@/app/(homepage)/(korean)/info/components/SubHero";
 import { createMetadata } from "@/utils/metadata";
 
 export const metadata = createMetadata({

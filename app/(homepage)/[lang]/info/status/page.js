@@ -1,5 +1,5 @@
 import { createServerSupabaseClient } from "@/utils/supabase/server";
-import StatusPage from "@/app/(korean)/info/status/StatusPage";
+import StatusPage from "@/app/(homepage)/(korean)/info/status/StatusPage";
 import { createMetadata } from "@/utils/metadata";
 
 export const metadata = createMetadata({

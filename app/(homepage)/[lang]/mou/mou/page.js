@@ -1,5 +1,4 @@
-import SubHero from "@/app/(korean)/info/components/SubHero";
-import MouList from "@/app/(korean)/mou/mou/MouList";
+import MouList from "@/app/(homepage)/(korean)/mou/mou/MouList";
 
 import { createMetadata } from "@/utils/metadata";
 

@@ -1,4 +1,4 @@
-import GreetingPage from "@/app/(korean)/info/greet/GreetingPage";
+import GreetingPage from "@/app/(homepage)/(korean)/info/greet/GreetingPage";
 import { createMetadata } from "@/utils/metadata";
 export const metadata = createMetadata({
   title: "President's Message",
