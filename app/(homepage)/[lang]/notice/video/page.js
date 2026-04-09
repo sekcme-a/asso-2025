@@ -1,5 +1,5 @@
 import SubHero from "@/app/(homepage)/(korean)/info/components/SubHero";
-import MediaList from "@/app/(homepage)/(korean)/notice/media/MediaList";
+import { createMetadata } from "@/utils/metadata";
 export const metadata = createMetadata({
   title: "동영상갤러리",
   description: `동영상갤러리 - 대한생활체육회의 활동 영상자료 모음입니다.`,
