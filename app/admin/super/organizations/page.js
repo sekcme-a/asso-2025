@@ -3,8 +3,10 @@
 import { useState, useEffect } from "react";
 import { createBrowserSupabaseClient } from "@/utils/supabase/client";
 import AdminNavbar from "../components/Navbar";
+import { useRouter } from "next/navigation";
 
 export default function AdminOrgPage() {
+  const router = useRouter();
   const supabase = createBrowserSupabaseClient();
   const [orgs, setOrgs] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -182,7 +184,9 @@ export default function AdminOrgPage() {
                         </td>
                         <td className="px-8 py-6 text-right space-x-3">
                           <button
-                            onClick={() => handleOpenModal(org)}
+                            onClick={() => {
+                              router.push(`/admin/organizations/${org.id}`);
+                            }}
                             className="text-xs font-black text-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded-lg transition-colors"
                           >
                             수정
