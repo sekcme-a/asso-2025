@@ -98,6 +98,7 @@ export default function MemberApplyPage() {
 
     if (error) {
       alert("신청 중 오류가 발생했습니다: " + error.message);
+      console.log(error);
     } else {
       alert("신청이 완료되었습니다. 관리자 승인을 기다려주세요.");
       router.push(`/team/${orgId}`);

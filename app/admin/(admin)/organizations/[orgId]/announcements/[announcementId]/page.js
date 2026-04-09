@@ -151,7 +151,7 @@ export default function AnnouncementEditPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-6 bg-gray-900 text-white rounded-[2rem] font-black text-lg hover:bg-blue-600 transition-all shadow-xl shadow-gray-200 disabled:bg-gray-200"
+            className="w-full py-3 bg-gray-900 text-white rounded-[2rem] font-black  hover:bg-blue-600 transition-all shadow-xl shadow-gray-200 disabled:bg-gray-200"
           >
             {loading
               ? "저장 중..."

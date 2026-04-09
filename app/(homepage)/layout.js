@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
 import metadata from "../metadata";
+import ScrollToTop from "@/components/ScrollToTop";
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -22,7 +23,11 @@ export default function RootLayout({ children }) {
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <Navbar /> <main>{children}</main>
+        <Navbar />{" "}
+        <main>
+          {children}
+          <ScrollToTop />
+        </main>
         <Footer />
       </body>
     </html>

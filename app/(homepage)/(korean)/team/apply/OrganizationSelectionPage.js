@@ -4,6 +4,19 @@ import { useState, useEffect, useMemo } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { createBrowserSupabaseClient } from "@/utils/supabase/client";
+
+// 섹션 정의 상수
+const SECTIONS = [
+  { id: "nation", ko: "전국 체육회", en: "National Sports Council" },
+  {
+    id: "internation",
+    ko: "국제 체육회",
+    en: "International Sports Council",
+  },
+  { id: "sports", ko: "종목별 체육회", en: "Sports-specific Organizations" },
+  { id: "sanha", ko: "산하단체", en: "Affiliated Organizations" },
+];
+
 export default function OrganizationSelectionPage() {
   const params = useParams();
   const isEnglish = params.lang === "en";
@@ -15,16 +28,15 @@ export default function OrganizationSelectionPage() {
 
   const DEFAULT_LOGO = "/images/logo-circle.png";
 
-  // 번역 헬퍼 함수
   const t = (ko, en) => (isEnglish ? en : ko);
 
   useEffect(() => {
     async function fetchOrganizations() {
       setLoading(true);
-      // 영문 검색 및 표시를 위해 name_en 컬럼도 함께 호출
+      // [수정] type 컬럼 추가 호출
       const { data, error } = await supabase
         .from("organizations")
-        .select("id, name, name_en, logo_url")
+        .select("id, name, name_en, logo_url, type")
         .order("name", { ascending: true });
 
       if (!error) setOrganizations(data || []);
@@ -33,7 +45,7 @@ export default function OrganizationSelectionPage() {
     fetchOrganizations();
   }, [supabase]);
 
-  // 검색 로직: 국문/영문 이름 모두에서 검색 가능하도록 처리
+  // 검색 로직
   const filteredOrgs = useMemo(() => {
     return organizations.filter((org) => {
       const targetName = org.name?.toLowerCase() || "";
@@ -42,6 +54,14 @@ export default function OrganizationSelectionPage() {
       return targetName.includes(search) || targetNameEn.includes(search);
     });
   }, [searchTerm, organizations]);
+
+  // [추가] 타입별로 그룹화된 데이터 계산
+  const groupedOrgs = useMemo(() => {
+    return SECTIONS.map((section) => ({
+      ...section,
+      orgs: filteredOrgs.filter((org) => org.type === section.id),
+    })).filter((section) => section.orgs.length > 0); // 단체가 있는 섹션만 표시
+  }, [filteredOrgs]);
 
   if (loading) {
     return (
@@ -67,7 +87,7 @@ export default function OrganizationSelectionPage() {
         </header>
 
         {/* 검색바 섹션 */}
-        <div className="max-w-md mx-auto mb-16 relative">
+        <div className="max-w-md mx-auto mb-20 relative">
           <div className="relative group">
             <input
               type="text"
@@ -92,63 +112,62 @@ export default function OrganizationSelectionPage() {
                 d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
               />
             </svg>
-            {searchTerm && (
-              <button
-                onClick={() => setSearchTerm("")}
-                className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 font-bold text-xs"
-              >
-                {t("초기화", "Clear")}
-              </button>
-            )}
           </div>
-          {searchTerm && (
-            <p className="text-center mt-4 text-xs font-bold text-blue-500 animate-pulse">
-              {t(
-                `'${searchTerm}' 검색 결과: ${filteredOrgs.length}건`,
-                `Search results for '${searchTerm}': ${filteredOrgs.length}`,
-              )}
-            </p>
-          )}
         </div>
 
-        {/* 원형 아이콘 그리드 */}
-        <div className="flex flex-wrap justify-center gap-x-6 gap-y-10">
-          {filteredOrgs.length > 0 ? (
-            filteredOrgs.map((org) => (
-              <Link
-                key={org.id}
-                href={isEnglish ? `/en/team/${org.id}` : `/team/${org.id}`}
-                className="group flex flex-col items-center w-24 sm:w-28 transition-all duration-300"
-              >
-                <div className="relative w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-full border-2 border-gray-100 p-1 shadow-sm group-hover:border-blue-500 group-hover:shadow-md transition-all duration-300 overflow-hidden">
-                  <div className="w-full h-full rounded-full overflow-hidden bg-gray-50 flex items-center justify-center">
-                    <img
-                      src={org.logo_url || DEFAULT_LOGO}
-                      alt={isEnglish ? org.name_en || org.name : org.name}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                      onError={(e) => {
-                        const target = e.target;
-                        target.src = DEFAULT_LOGO;
-                      }}
-                    />
-                  </div>
-                </div>
-                <span className="mt-3 text-[11px] sm:text-xs font-bold text-gray-500 text-center line-clamp-2 leading-tight group-hover:text-blue-600 transition-colors">
-                  {isEnglish ? org.name_en || org.name : org.name}
+        {/* 섹션별 그리드 나열 */}
+        {groupedOrgs.length > 0 ? (
+          groupedOrgs.map((section) => (
+            <div key={section.id} className="mb-20">
+              {/* 섹션 타이틀 */}
+              <div className="flex items-center gap-4 mb-10">
+                <h2 className="text-xl font-black text-gray-900 whitespace-nowrap">
+                  {t(section.ko, section.en)}
+                </h2>
+                <div className="h-[1px] w-full bg-gray-100" />
+                <span className="text-xs font-bold text-blue-500 bg-blue-50 px-3 py-1 rounded-full">
+                  {section.orgs.length}
                 </span>
-              </Link>
-            ))
-          ) : (
-            <div className="w-full py-20 text-center">
-              <p className="text-gray-300 font-black text-lg">
-                {t(
-                  "검색 결과와 일치하는 단체가 없습니다.",
-                  "No organizations match your search.",
-                )}
-              </p>
+              </div>
+
+              {/* 원형 아이콘 그리드 */}
+              <div className="flex flex-wrap justify-start gap-x-6 gap-y-10">
+                {section.orgs.map((org) => (
+                  <Link
+                    key={org.id}
+                    href={isEnglish ? `/en/team/${org.id}` : `/team/${org.id}`}
+                    className="group flex flex-col items-center w-24 sm:w-28 transition-all duration-300"
+                  >
+                    <div className="relative w-20 h-20 sm:w-24 sm:h-24 bg-white rounded-full border-2 border-gray-100 p-1 shadow-sm group-hover:border-blue-500 group-hover:shadow-md transition-all duration-300 overflow-hidden">
+                      <div className="w-full h-full rounded-full overflow-hidden bg-gray-50 flex items-center justify-center">
+                        <img
+                          src={org.logo_url || DEFAULT_LOGO}
+                          alt={isEnglish ? org.name_en || org.name : org.name}
+                          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                          onError={(e) => {
+                            e.target.src = DEFAULT_LOGO;
+                          }}
+                        />
+                      </div>
+                    </div>
+                    <span className="mt-3 text-sm sm:text-sm font-bold text-gray-900 text-center line-clamp-2 leading-tight group-hover:text-blue-600 transition-colors">
+                      {isEnglish ? org.name_en || org.name : org.name}
+                    </span>
+                  </Link>
+                ))}
+              </div>
             </div>
-          )}
-        </div>
+          ))
+        ) : (
+          <div className="w-full py-20 text-center">
+            <p className="text-gray-300 font-black text-lg">
+              {t(
+                "검색 결과와 일치하는 단체가 없습니다.",
+                "No organizations match your search.",
+              )}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

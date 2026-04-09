@@ -133,6 +133,10 @@ export default function Navbar() {
           name: t("대회/행사일정", "Events & Competitions"),
           href: "/team/schedule",
         },
+        {
+          name: t("문의하기", "Contact Us"),
+          href: "/contact",
+        },
       ],
     },
   ];

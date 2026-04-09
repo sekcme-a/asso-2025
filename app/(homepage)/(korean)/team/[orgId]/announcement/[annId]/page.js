@@ -115,7 +115,7 @@ export default function AnnouncementDetailPage() {
 
           {/* 본문 섹션 */}
           <div className="p-8 md:p-12">
-            <div className="article-content-wrapper relative">
+            <div className="relative">
               <ArticleContent html={announcement.content} />
             </div>
           </div>
