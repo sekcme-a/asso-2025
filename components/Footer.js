@@ -12,15 +12,13 @@ export default function Footer() {
   // 번역 헬퍼 함수
   const t = (ko, en) => (isEnglish ? en : ko);
 
-  // 다국어 메뉴 데이터 - Navbar.js의 href 경로와 동기화
+  // 다국어 메뉴 데이터 생략 (기존과 동일)
   const footerMenu = [
+    /* ... 기존 메뉴 데이터 ... */
     {
       title: t("체육회 소개", "About KSFAA"),
       links: [
-        {
-          name: t("총재 인사말", "President's Message"),
-          href: "/info/greet",
-        },
+        { name: t("총재 인사말", "President's Message"), href: "/info/greet" },
         { name: t("설립목적", "Mission & Purpose"), href: "/info/purpose" },
         { name: t("중앙조직도", "Organization"), href: "/info/chart" },
         { name: t("임원현황", "Officers"), href: "/info/status" },
@@ -38,10 +36,7 @@ export default function Footer() {
           name: t("국제 체육회 현황", "International Status"),
           href: "/group/internation",
         },
-        {
-          name: t("종목별 운영현황", "Disciplines"),
-          href: "/group/sports",
-        },
+        { name: t("종목별 운영현황", "Disciplines"), href: "/group/sports" },
         { name: t("산하단체", "Subsidiaries"), href: "/group/sanha" },
       ],
     },
@@ -71,7 +66,6 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto">
         {/* TOP: BRANDING & MENU GRID */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 mb-24">
-          {/* BRAND COLUMN */}
           <div className="col-span-2 lg:col-span-1">
             <div className="relative w-[180px] h-[60px] mb-6 ">
               <Image
@@ -89,7 +83,6 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* MENU COLUMNS */}
           {footerMenu.map((group, i) => (
             <nav key={i} className="space-y-4" aria-label={group.title}>
               <h3 className="text-xs font-black tracking-[0.2em] text-gray-500 uppercase">
@@ -100,10 +93,6 @@ export default function Footer() {
                   <li key={j}>
                     <Link
                       href={isEnglish ? `/en${link.href}` : link.href}
-                      title={t(
-                        `${link.name} 페이지로 이동`,
-                        `Go to ${link.name}`,
-                      )}
                       className="text-[15px] font-bold text-gray-300 hover:text-white hover:translate-x-1 transition-all inline-block"
                     >
                       {link.name}
@@ -140,6 +129,16 @@ export default function Footer() {
                 </p>
               </div>
             </address>
+
+            {/* 관리자 페이지 이동 버튼 추가 */}
+            <div className="flex items-center gap-4">
+              <Link
+                href="/admin/hallway"
+                className="text-[10px] font-black uppercase tracking-widest text-gray-500 border border-gray-700 px-4 py-2 rounded-lg hover:bg-white hover:text-gray-900 hover:border-white transition-all"
+              >
+                {t("체육회 관리페이지", "Admin Console")}
+              </Link>
+            </div>
           </div>
         </div>
       </div>

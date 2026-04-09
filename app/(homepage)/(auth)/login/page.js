@@ -62,7 +62,8 @@ export default function LoginPage() {
       if (error) alert(getKoreanErrorMessage(error));
       else {
         alert(
-          "회원가입 신청이 완료되었습니다!\n입력하신 이메일로 인증 메일을 보내드렸으니 확인 부탁드립니다.", // 문구 수정
+          // "회원가입 신청이 완료되었습니다!\n입력하신 이메일로 인증 메일을 보내드렸으니 확인 부탁드립니다.", // 문구 수정
+          "회원가입을 환영합니다! 지금부터 다양한 기능을 자유롭게 이용하실 수 있습니다.",
         );
         setMode("login");
       }
@@ -74,7 +75,7 @@ export default function LoginPage() {
     e.preventDefault();
     setLoading(true);
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/${groupId}/update-password`,
+      redirectTo: `${window.location.origin}/update-password`,
     });
     if (error) alert(getKoreanErrorMessage(error));
     else {
