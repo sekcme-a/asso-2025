@@ -3,21 +3,46 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
+import { createBrowserSupabaseClient } from "@/utils/supabase/client";
 
 export default function Navbar() {
+  const supabase = createBrowserSupabaseClient();
+  const [user, setUser] = useState(null); // 로그인 사용자 상태 추가
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
 
-  // 스크롤 감지 로직
-  // useEffect(() => {
-  //   const handleScroll = () => {
-  //     setScrolled(window.scrollY > 20);
-  //   };
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => window.removeEventListener("scroll", handleScroll);
-  // }, []);
+  // ✅ profile이 포함된 경로인지 확인
+  const isHideTranslatePage =
+    pathname.includes("profile") || pathname.includes("team");
+
+  // 로그인 상태 실시간 감지
+  useEffect(() => {
+    const fetchUser = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      setUser(user);
+    };
+
+    fetchUser();
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null);
+    });
+
+    return () => subscription.unsubscribe();
+  }, [supabase]);
+
+  // 로그아웃 처리 함수
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
+    router.push(isEnglish ? "/en" : "/");
+    setIsOpen(false);
+  };
 
   const isEnglish = pathname.startsWith("/en");
   const lang = isEnglish ? "EN" : "KO";
@@ -41,6 +66,7 @@ export default function Navbar() {
   const getHref = (path) => (isEnglish ? `/en${path}` : path);
 
   const menuItems = [
+    // ... menuItems 배열 (기존과 동일하므로 생략)
     {
       title: t("체육회 소개", "About"),
       subMenu: [
@@ -79,22 +105,17 @@ export default function Navbar() {
         { name: t("언론보도", "Press Release"), href: "/notice/media" },
         { name: t("포토갤러리", "Photo Gallery"), href: "/notice/photo" },
         { name: t("동영상갤러리", "Video Gallery"), href: "/notice/video" },
-        {
-          name: t("대회/행사일정", "Event Schedule"),
-          href: "/notice/schedule",
-        },
+        // {
+        //   name: t("대회/행사일정", "Event Schedule"),
+        //   href: "/notice/schedule",
+        // },
         { name: t("자료실", "Archive"), href: "/notice/reference" },
       ],
     },
     {
-      title: t("협력업체", "Partners"),
+      title: t("협력/후원안내", "Partners & Sponsorship"),
       subMenu: [
         { name: t("협력업체 현황", "Partners List"), href: "/mou/mou" },
-      ],
-    },
-    {
-      title: t("후원안내", "Sponsorship"),
-      subMenu: [
         { name: t("후원안내", "Sponsorship Guide"), href: "/support" },
         {
           name: t("후원확인", "Sponsorship Verification"),
@@ -102,10 +123,22 @@ export default function Navbar() {
         },
       ],
     },
+    {
+      title: t("체육단체", "Sports Organizations"),
+      subMenu: [
+        {
+          name: t("경기인 신청", "Athlete Registration"),
+          href: "/team/apply",
+        },
+        {
+          name: t("대회/행사일정", "Events & Competitions"),
+          href: "/team/schedule",
+        },
+      ],
+    },
   ];
 
   return (
-    // nav 태그에 주요 내비게이션임을 명시
     <nav
       aria-label={t("주요 메뉴", "Main Navigation")}
       className={`fixed w-full z-[100] bg-white transition-all duration-300 ease-in-out ${scrolled ? "shadow-lg" : "border-b border-gray-200"}`}
@@ -115,41 +148,64 @@ export default function Navbar() {
         className={`hidden lg:block bg-gray-50 border-b border-gray-100 transition-all duration-300 ease-in-out overflow-hidden ${scrolled ? "h-0 opacity-0 border-none" : "h-10 opacity-100"}`}
       >
         <div className="max-w-7xl mx-auto px-6 h-10 flex justify-end items-center gap-6 text-[12px] font-medium text-gray-500">
-          <Link
-            href={getHref("/login")}
-            className="hover:text-blue-600 transition-colors"
-          >
-            {t("로그인", "Login")}
-          </Link>
-          <div
-            className="flex items-center gap-2"
-            role="group"
-            aria-label={t("언어 선택", "Language Selection")}
-          >
-            <button
-              onClick={() => toggleLanguage("KO")}
-              aria-pressed={lang === "KO"}
-              className={
-                lang === "KO"
-                  ? "text-blue-600 font-bold"
-                  : "hover:text-gray-800"
-              }
+          {/* 로그인 상태에 따른 버튼 조건부 렌더링 */}
+          {user ? (
+            <>
+              <button
+                onClick={() => router.push("/profile")}
+                className="text-blue-700 font-bold transition-colors"
+              >
+                {t("내 프로필", "My Profile")}
+              </button>
+              <button
+                onClick={handleLogout}
+                className="hover:text-red-600 transition-colors"
+              >
+                {t("로그아웃", "Logout")}
+              </button>
+            </>
+          ) : (
+            <Link
+              href="/login"
+              className="hover:text-blue-600 transition-colors"
             >
-              KOR
-            </button>
-            <span className="w-[1px] h-3 bg-gray-300" aria-hidden="true"></span>
-            <button
-              onClick={() => toggleLanguage("EN")}
-              aria-pressed={lang === "EN"}
-              className={
-                lang === "EN"
-                  ? "text-blue-600 font-bold"
-                  : "hover:text-gray-800"
-              }
+              {t("로그인", "Login")}
+            </Link>
+          )}
+          {!isHideTranslatePage && (
+            <div
+              className="flex items-center gap-2"
+              role="group"
+              aria-label={t("언어 선택", "Language Selection")}
             >
-              ENG
-            </button>
-          </div>
+              <button
+                onClick={() => toggleLanguage("KO")}
+                aria-pressed={lang === "KO"}
+                className={
+                  lang === "KO"
+                    ? "text-blue-600 font-bold"
+                    : "hover:text-gray-800"
+                }
+              >
+                KOR
+              </button>
+              <span
+                className="w-[1px] h-3 bg-gray-300"
+                aria-hidden="true"
+              ></span>
+              <button
+                onClick={() => toggleLanguage("EN")}
+                aria-pressed={lang === "EN"}
+                className={
+                  lang === "EN"
+                    ? "text-blue-600 font-bold"
+                    : "hover:text-gray-800"
+                }
+              >
+                ENG
+              </button>
+            </div>
+          )}
         </div>
       </div>
 
@@ -168,7 +224,7 @@ export default function Navbar() {
             >
               <Image
                 src="/images/logo.png"
-                alt="대한생활체육회 (Korea Sports For All Athletic Association)"
+                alt="대한생활체육회"
                 fill
                 className="object-contain"
                 priority
@@ -176,7 +232,7 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* Desktop Menu - 목록 구조로 변경하여 SEO 강화 */}
+          {/* Desktop Menu */}
           <ul className="hidden lg:flex items-center gap-2 h-full">
             {menuItems.map((menu) => (
               <li
@@ -191,7 +247,6 @@ export default function Navbar() {
                   {menu.title}
                 </button>
 
-                {/* Dropdown Panel - 시맨틱한 ul/li 구조 */}
                 <ul
                   className={`absolute left-1/2 -translate-x-1/2 w-48 bg-white border border-gray-100 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 transform group-hover:translate-y-0 translate-y-2 py-2 rounded-b-xl ${scrolled ? "top-[64px]" : "top-[80px]"}`}
                 >
@@ -231,13 +286,20 @@ export default function Navbar() {
       {isOpen && (
         <div className="lg:hidden bg-white border-t border-gray-100 overflow-y-auto max-h-[calc(100vh-80px)]">
           <div className="p-6 bg-gray-100 flex justify-between items-center text-sm font-medium">
-            <Link
-              href={getHref("/login")}
-              className="text-gray-600"
-              onClick={() => setIsOpen(false)}
-            >
-              {t("로그인", "Login")}
-            </Link>
+            {/* 모달 로그인/로그아웃 조건부 렌더링 */}
+            {user ? (
+              <button onClick={handleLogout} className="text-red-600">
+                {t("로그아웃", "Logout")}
+              </button>
+            ) : (
+              <Link
+                href={getHref("/login")}
+                className="text-gray-600"
+                onClick={() => setIsOpen(false)}
+              >
+                {t("로그인", "Login")}
+              </Link>
+            )}
             <button
               onClick={() => toggleLanguage(isEnglish ? "KO" : "EN")}
               className="text-blue-600 border border-blue-600 px-4 py-1 rounded-full"

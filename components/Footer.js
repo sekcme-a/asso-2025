@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import Image from "next/image";
 
 export default function Footer() {
   const params = useParams();
@@ -11,19 +12,19 @@ export default function Footer() {
   // 번역 헬퍼 함수
   const t = (ko, en) => (isEnglish ? en : ko);
 
-  // 다국어 메뉴 데이터
+  // 다국어 메뉴 데이터 - Navbar.js의 href 경로와 동기화
   const footerMenu = [
     {
       title: t("체육회 소개", "About KSFAA"),
       links: [
         {
           name: t("총재 인사말", "President's Message"),
-          href: "/about/greeting",
+          href: "/info/greet",
         },
-        { name: t("설립목적", "Mission & Purpose"), href: "/about/purpose" },
-        { name: t("중앙조직도", "Organization"), href: "/about/organization" },
-        { name: t("임원현황", "Officers"), href: "/about/officers" },
-        { name: t("오시는 길", "Location"), href: "/about/location" },
+        { name: t("설립목적", "Mission & Purpose"), href: "/info/purpose" },
+        { name: t("중앙조직도", "Organization"), href: "/info/chart" },
+        { name: t("임원현황", "Officers"), href: "/info/status" },
+        { name: t("오시는 길", "Location"), href: "/info/location" },
       ],
     },
     {
@@ -31,37 +32,36 @@ export default function Footer() {
       links: [
         {
           name: t("전국 체육회 현황", "National Status"),
-          href: "/group/national",
+          href: "/group/nation",
         },
         {
           name: t("국제 체육회 현황", "International Status"),
-          href: "/group/international",
+          href: "/group/internation",
         },
         {
           name: t("종목별 운영현황", "Disciplines"),
-          href: "/group/disciplines",
+          href: "/group/sports",
         },
-        { name: t("산하단체", "Subsidiaries"), href: "/group/subsidiaries" },
+        { name: t("산하단체", "Subsidiaries"), href: "/group/sanha" },
       ],
     },
     {
       title: t("알림마당", "Notice Board"),
       links: [
-        { name: t("공지사항", "Notice"), href: "/notice" },
-        { name: t("언론보도", "Press"), href: "/press" },
-        { name: t("포토갤러리", "Photo Gallery"), href: "/gallery" },
-        { name: t("동영상갤러리", "Video Gallery"), href: "/video" },
-        { name: t("대회신청", "Apply for Competition"), href: "/apply" },
-        { name: t("대회/행사일정", "Schedule"), href: "/schedule" },
-        { name: t("자료실", "Archive"), href: "/archive" },
+        { name: t("공지사항", "Notice"), href: "/notice/anouncement" },
+        { name: t("언론보도", "Press"), href: "/notice/media" },
+        { name: t("포토갤러리", "Photo Gallery"), href: "/notice/photo" },
+        { name: t("동영상갤러리", "Video Gallery"), href: "/notice/video" },
+        { name: t("대회/행사일정", "Schedule"), href: "/notice/schedule" },
+        { name: t("자료실", "Archive"), href: "/notice/reference" },
       ],
     },
     {
       title: t("협력 및 후원", "Partnership"),
       links: [
-        { name: t("협력업체", "Partners"), href: "/partners" },
-        { name: t("후원안내", "Sponsorship Info"), href: "/support/info" },
-        { name: t("후원확인", "Check Donation"), href: "/support/check" },
+        { name: t("협력업체", "Partners"), href: "/mou/mou" },
+        { name: t("후원안내", "Sponsorship Info"), href: "/support" },
+        { name: t("후원확인", "Check Donation"), href: "/notice/sup" },
       ],
     },
   ];
@@ -73,12 +73,14 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 mb-24">
           {/* BRAND COLUMN */}
           <div className="col-span-2 lg:col-span-1">
-            <h2 className="text-2xl font-black tracking-tighter mb-6">
-              {t("대한생활체육회", "KSFAA")}
-              <span className="block text-xs font-bold text-blue-500 tracking-[0.3em] mt-2 uppercase">
-                Korea Sports For All Athletic Association
-              </span>
-            </h2>
+            <div className="relative w-[180px] h-[60px] mb-6 ">
+              <Image
+                src="/images/logo_white.png"
+                alt={t("대한생활체육회", "KSFAA")}
+                fill
+                className="object-contain"
+              />
+            </div>
             <p className="text-gray-400 text-sm font-medium leading-relaxed break-keep mb-8">
               {t(
                 "스포츠로 하나 되는 건강한 대한민국, 국민 모두가 주인공입니다.",
@@ -89,11 +91,11 @@ export default function Footer() {
 
           {/* MENU COLUMNS */}
           {footerMenu.map((group, i) => (
-            <nav key={i} className="space-y-6" aria-label={group.title}>
+            <nav key={i} className="space-y-4" aria-label={group.title}>
               <h3 className="text-xs font-black tracking-[0.2em] text-gray-500 uppercase">
                 {group.title}
               </h3>
-              <ul className="space-y-4">
+              <ul className="space-y-2">
                 {group.links.map((link, j) => (
                   <li key={j}>
                     <Link
@@ -114,7 +116,7 @@ export default function Footer() {
         </div>
 
         {/* BOTTOM: INFO & COPYRIGHT */}
-        <div className="pt-12 border-t border-white/5">
+        <div className="pt-4 border-t border-white/5">
           <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end gap-10">
             <address className="not-italic space-y-4 text-xs font-bold text-gray-500 leading-relaxed">
               <div className="flex flex-wrap gap-x-6 gap-y-2">
@@ -130,7 +132,6 @@ export default function Footer() {
                     02-2088-7508
                   </a>
                 </span>
-                {/* <span>{t("팩스", "Fax")}: 02-1234-5679</span> */}
               </div>
 
               <div className="pt-4">
@@ -139,21 +140,6 @@ export default function Footer() {
                 </p>
               </div>
             </address>
-
-            {/* <nav className="flex flex-wrap gap-x-6 gap-y-2 text-xs font-bold">
-              <Link
-                href={isEnglish ? "/en/privacy" : "/privacy"}
-                className="text-gray-300 hover:text-blue-500"
-              >
-                {t("개인정보처리방침", "Privacy Policy")}
-              </Link>
-              <Link
-                href={isEnglish ? "/en/terms" : "/terms"}
-                className="text-gray-300 hover:text-blue-500"
-              >
-                {t("이용약관", "Terms of Service")}
-              </Link>
-            </nav> */}
           </div>
         </div>
       </div>
