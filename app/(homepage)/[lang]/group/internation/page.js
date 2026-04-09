@@ -1,5 +1,5 @@
 import { createServerSupabaseClient } from "@/utils/supabase/server";
-import GroupList from "../GroupList";
+import GroupList from "@/app/(homepage)/(korean)/group/GroupList";
 import { createMetadata } from "@/utils/metadata";
 export const metadata = createMetadata({
   title: "International Organizations",
@@ -10,12 +10,10 @@ export const metadata = createMetadata({
 export default async function Nation() {
   const supabase = await createServerSupabaseClient();
 
-  const { data: pageData } = await supabase
-    .from("page_settings")
-    .select("data")
-    .eq("type", `group_internation`)
-    .single();
+  const { data } = await supabase
+    .from("organizations")
+    .select("id, name_en, leader, logo_url, description_en")
+    .eq("type", `internation`);
 
-  const groups = pageData?.data || [];
-  return <GroupList type="internation" groups={groups} />;
+  return <GroupList type="internation" groups={data} />;
 }

@@ -14,8 +14,7 @@ export default function Navbar() {
   const router = useRouter();
 
   // ✅ profile이 포함된 경로인지 확인
-  const isHideTranslatePage =
-    pathname.includes("profile") || pathname.includes("team");
+  const isHideTranslatePage = pathname.includes("profile");
 
   // 로그인 상태 실시간 감지
   useEffect(() => {

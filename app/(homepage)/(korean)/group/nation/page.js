@@ -11,12 +11,10 @@ export const metadata = createMetadata({
 export default async function Nation() {
   const supabase = await createServerSupabaseClient();
 
-  const { data: pageData } = await supabase
-    .from("page_settings")
-    .select("data")
-    .eq("type", `group_nation`)
-    .single();
+  const { data } = await supabase
+    .from("organizations")
+    .select("id, name, leader, logo_url, description")
+    .eq("type", `nation`);
 
-  const groups = pageData?.data || [];
-  return <GroupList type="nation" groups={groups} />;
+  return <GroupList type="nation" groups={data} />;
 }

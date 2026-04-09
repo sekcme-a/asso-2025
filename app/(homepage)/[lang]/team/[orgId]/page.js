@@ -1,6 +1,6 @@
 // app/[lang]/team/[orgId]/page.js (경로에 맞게 조정)
 import { cookies } from "next/headers";
-import OrganizationDetail from "./OrganizationDetail";
+import OrganizationDetail from "@/app/(homepage)/(korean)/team/[orgId]/OrganizationDetail";
 import { createServerSupabaseClient } from "@/utils/supabase/server";
 
 export async function generateMetadata({ params }) {

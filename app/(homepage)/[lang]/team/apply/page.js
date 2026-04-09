@@ -1,12 +1,12 @@
+import OrganizationSelectionPage from "@/app/(homepage)/(korean)/team/apply/OrganizationSelectionPage";
 import { createMetadata } from "@/utils/metadata";
-import OrganizationSelectionPage from "./OrganizationSelectionPage";
-
 export const metadata = createMetadata({
-  title: "경기인 신청",
+  title: "Athlete Registration",
   description:
-    "경기인을 위한 신청 페이지입니다. 소속 단체를 선택하여 신청을 시작하세요.",
+    "Registration page for athletes. Please select your affiliated organization to begin.",
   url: "/team/apply",
 });
+
 export default function ApplyPage() {
   return (
     <>

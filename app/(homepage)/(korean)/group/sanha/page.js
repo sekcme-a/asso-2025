@@ -11,12 +11,9 @@ export const metadata = createMetadata({
 export default async function Nation() {
   const supabase = await createServerSupabaseClient();
 
-  const { data: pageData } = await supabase
-    .from("page_settings")
-    .select("data")
-    .eq("type", `group_sanha`)
-    .single();
-
-  const groups = pageData?.data || [];
-  return <GroupList type="sanha" groups={groups} />;
+  const { data } = await supabase
+    .from("organizations")
+    .select("id, name, leader, logo_url, description")
+    .eq("type", `sanha`);
+  return <GroupList type="sanha" groups={data} />;
 }
