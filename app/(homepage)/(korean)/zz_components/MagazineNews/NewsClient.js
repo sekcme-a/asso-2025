@@ -8,9 +8,16 @@ import { motion } from "framer-motion";
 export default function NewsClient({ blocks }) {
   const params = useParams();
   const isEnglish = params.lang === "en";
+
+  // 다국어 처리 헬퍼 함수
   const t = (ko, en) => (isEnglish ? en : ko);
 
-  // 데이터 안전성 확보
+  // 각 아이템의 언어별 제목/본문 선택
+  const getTitle = (item) =>
+    isEnglish && item.title_en ? item.title_en : item.title;
+  const getContent = (item) =>
+    isEnglish && item.content_en ? item.content_en : item.content;
+
   const featuredNews = blocks?.[0] || { title: "", content: "", images: [] };
   const sideNews = blocks?.slice(1, 4) || [];
 
@@ -42,7 +49,7 @@ export default function NewsClient({ blocks }) {
           </motion.div>
 
           <Link
-            href={isEnglish ? "/en/board/notice" : "/board/notice"}
+            href={isEnglish ? "/en/notice/anouncement" : "/notice/anouncement"}
             title={t("전체 소식 보기", "See all news")}
             className="group flex items-center gap-2 text-[11px] font-bold text-gray-200 hover:text-white transition-colors"
           >
@@ -61,28 +68,27 @@ export default function NewsClient({ blocks }) {
           <motion.article {...fadeInUp} className="lg:col-span-7 group">
             <Link
               href={featuredNews.url || "#"}
-              title={featuredNews.title}
+              title={getTitle(featuredNews)}
               className="relative block h-[300px] lg:h-[420px] rounded-[1.5rem] overflow-hidden"
             >
               <Image
                 src={featuredNews.images?.[0] || "/images/og_logo.png"}
-                // SEO: 기사 제목을 alt 텍스트로 활용하여 이미지 검색 최적화
-                alt={featuredNews.title || "Latest News Image"}
+                alt={getTitle(featuredNews) || "Latest News Image"}
                 fill
-                priority // 메인 기사 이미지는 로딩 우선순위 상향
-                className="object-cover transition-transform duration-700 group-hover:scale-105"
+                priority
+                className="object-contain transition-transform duration-700 group-hover:scale-105"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent" />
 
               <div className="absolute bottom-6 left-6 right-6">
                 <strong className="bg-blue-600 px-2 py-0.5 rounded text-[9px] font-black uppercase mb-3 inline-block">
-                  Top Stories
+                  {t("주요 소식", "Top Stories")}
                 </strong>
                 <h3 className="text-xl lg:text-2xl font-black leading-tight break-keep group-hover:text-blue-400 transition-colors">
-                  {featuredNews.title}
+                  {getTitle(featuredNews)}
                 </h3>
                 <p className="mt-2 text-gray-200 text-xs lg:text-sm line-clamp-1 font-medium opacity-80">
-                  {featuredNews.content}
+                  {getContent(featuredNews)}
                 </p>
               </div>
             </Link>
@@ -104,7 +110,7 @@ export default function NewsClient({ blocks }) {
               >
                 <Link
                   href={news.url || "#"}
-                  title={news.title}
+                  title={getTitle(news)}
                   className="group block py-5 lg:py-6 first:pt-0 last:pb-0"
                 >
                   <div className="flex items-start justify-between gap-4">
@@ -113,22 +119,20 @@ export default function NewsClient({ blocks }) {
                         {t("공지", "Notice")}
                       </p>
                       <h4 className="text-base lg:text-lg font-bold group-hover:text-blue-400 transition-colors line-clamp-1 break-keep">
-                        {news.title}
+                        {getTitle(news)}
                       </h4>
                       <p className="mt-1 text-gray-400 text-sm line-clamp-2 font-medium">
-                        {news.content}
+                        {getContent(news)}
                       </p>
                     </div>
-                    {news.url && (
-                      <div
-                        className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-blue-600 transition-all"
-                        aria-hidden="true"
-                      >
-                        <span className="text-[10px] group-hover:translate-x-0.5 transition-transform">
-                          →
-                        </span>
-                      </div>
-                    )}
+                    <div
+                      className="w-8 h-8 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-blue-600 transition-all"
+                      aria-hidden="true"
+                    >
+                      <span className="text-[10px] group-hover:translate-x-0.5 transition-transform">
+                        →
+                      </span>
+                    </div>
                   </div>
                 </Link>
               </motion.article>

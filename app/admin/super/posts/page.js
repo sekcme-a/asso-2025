@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { createBrowserSupabaseClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
 
 const CATEGORIES = [
   { key: "all", label: "전체" },
@@ -14,6 +15,7 @@ const CATEGORIES = [
 ];
 
 export default function PostListPage() {
+  const router = useRouter();
   const supabase = createBrowserSupabaseClient();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -165,7 +167,8 @@ export default function PostListPage() {
                 posts.map((post) => (
                   <tr
                     key={post.id}
-                    className="hover:bg-indigo-50/30 transition-colors"
+                    onClick={() => router.push(`/admin/super/posts/${post.id}`)}
+                    className="hover:bg-indigo-50/30 transition-colors cursor-pointer"
                   >
                     <td className="px-6 py-4 text-sm font-medium text-indigo-600">
                       {CATEGORIES.find((c) => c.key === post.category)?.label}
@@ -176,7 +179,7 @@ export default function PostListPage() {
                     <td className="px-6 py-4 text-sm text-gray-400">
                       {new Date(post.created_at).toLocaleDateString()}
                     </td>
-                    <td className="px-6 py-4 text-right space-x-4">
+                    {/* <td className="px-6 py-4 text-right space-x-4">
                       <Link
                         href={`/admin/super/posts/${post.id}`}
                         className="text-gray-600 hover:text-indigo-600 font-semibold text-sm"
@@ -189,7 +192,7 @@ export default function PostListPage() {
                       >
                         삭제
                       </button>
-                    </td>
+                    </td> */}
                   </tr>
                 ))}
             </tbody>
@@ -203,6 +206,7 @@ export default function PostListPage() {
               <div
                 key={post.id}
                 className="p-5 flex flex-col gap-3 active:bg-gray-50"
+                onClick={() => router.push(`/admin/super/posts/${post.id}`)}
               >
                 <div className="flex justify-between items-start">
                   <span className="px-2 py-1 bg-indigo-50 text-indigo-700 text-[10px] font-bold rounded uppercase">
@@ -215,7 +219,7 @@ export default function PostListPage() {
                 <h3 className="font-bold text-gray-900 leading-snug">
                   {post.title}
                 </h3>
-                <div className="flex justify-end gap-4 mt-2 border-t pt-3 border-gray-50">
+                {/* <div className="flex justify-end gap-4 mt-2 border-t pt-3 border-gray-50">
                   <Link
                     href={`/admin/posts/${post.id}`}
                     className="flex items-center text-sm text-gray-600 font-medium"
@@ -228,7 +232,7 @@ export default function PostListPage() {
                   >
                     삭제
                   </button>
-                </div>
+                </div> */}
               </div>
             ))}
         </div>

@@ -94,13 +94,13 @@ export default function AnnouncementListPage() {
                   <td className="px-8 py-6 text-right space-x-3">
                     <Link
                       href={`/admin/organizations/${orgId}/announcements/${item.id}`}
-                      className="text-xs font-black text-gray-400 hover:text-blue-600"
+                      className="text-sm font-black text-gray-900 hover:text-blue-600"
                     >
                       수정
                     </Link>
                     <button
                       onClick={() => handleDelete(item.id)}
-                      className="text-xs font-black text-red-300 hover:text-red-500"
+                      className="text-sm font-black text-red-300 hover:text-red-500"
                     >
                       삭제
                     </button>

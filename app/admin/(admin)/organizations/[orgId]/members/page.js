@@ -25,7 +25,7 @@ export default function MemberManagementPage() {
   const fetchData = useCallback(async () => {
     setLoading(true);
 
-    // 1. 신청 대기 목록 가져오기 (Profiles 조인)
+    // 1. 신청 대기 목록 가져오기 (Profiles 조인) - *로 모든 필드(message 포함) 가져옴
     const { data: appData } = await supabase
       .from("member_applications")
       .select(`*, profiles:user_id(name, phone)`)
@@ -115,7 +115,7 @@ export default function MemberManagementPage() {
                   className="bg-white border border-blue-100 rounded-[2rem] p-6 flex items-center justify-between shadow-sm shadow-blue-50"
                 >
                   <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center font-black text-blue-600 text-xs text-center leading-tight">
+                    <div className="w-12 h-12 bg-blue-50 rounded-2xl flex items-center justify-center font-black text-blue-600 text-xs text-center leading-tight shrink-0">
                       {app.role.replace("선수관리담당자", "관리")}
                     </div>
                     <div>
@@ -125,6 +125,12 @@ export default function MemberManagementPage() {
                       <p className="text-xs font-bold text-gray-400">
                         {app.profiles?.phone || "연락처 미등록"}
                       </p>
+                      {/* 신청 메시지 표시 추가 */}
+                      {app.message && (
+                        <p className="text-[11px] font-bold text-blue-500 mt-1 bg-blue-50/50 px-2 py-0.5 rounded-lg inline-block">
+                          {app.message}
+                        </p>
+                      )}
                     </div>
                   </div>
                   <div className="flex gap-2">

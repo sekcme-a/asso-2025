@@ -3,14 +3,17 @@
 import { useState, useEffect } from "react";
 import Script from "next/script";
 import { createBrowserSupabaseClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
 
 export default function MyProfilePage() {
   const supabase = createBrowserSupabaseClient();
+  const router = useRouter();
 
   // 로딩 및 상태 관리
   const [loading, setLoading] = useState(true);
   const [isEdit, setIsEdit] = useState(false);
   const [updating, setUpdating] = useState(false);
+  const [isWithdrawing, setIsWithdrawing] = useState(false);
 
   // 프로필 데이터 상태
   const [profile, setProfile] = useState({
@@ -52,8 +55,7 @@ export default function MyProfilePage() {
           });
         }
 
-        // 2. 선수 등록 신청 내역 (member_applications)
-        // status가 'pending'이거나 'rejected'인 것 위주로 표시
+        // 2. 선수 등록 신청 내역
         const { data: appData } = await supabase
           .from("member_applications")
           .select(
@@ -70,7 +72,7 @@ export default function MyProfilePage() {
 
         setApplications(appData || []);
 
-        // 3. 현재 소속된 단체 (org_members)
+        // 3. 현재 소속된 단체
         const { data: memData } = await supabase
           .from("org_members")
           .select(
@@ -135,6 +137,35 @@ export default function MyProfilePage() {
     setUpdating(false);
   }
 
+  // 회원 탈퇴 함수
+  async function handleWithdraw() {
+    if (
+      !confirm(
+        "정말로 탈퇴하시겠습니까?\n탈퇴 시 모든 활동 내역과 프로필이 삭제되며 복구할 수 없습니다.",
+      )
+    ) {
+      return;
+    }
+
+    try {
+      setIsWithdrawing(true);
+      // SQL Editor에서 만든 함수 호출
+      const { error } = await supabase.rpc("delete_user_account");
+
+      if (error) throw error;
+
+      // 성공 시 로그아웃 처리 및 메인 이동
+      await supabase.auth.signOut();
+      alert("회원 탈퇴가 완료되었습니다.");
+      router.push("/");
+    } catch (err) {
+      console.error(err);
+      alert("탈퇴 처리 중 오류가 발생했습니다.");
+    } finally {
+      setIsWithdrawing(false);
+    }
+  }
+
   if (loading)
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#f4f7f9]">
@@ -150,7 +181,6 @@ export default function MyProfilePage() {
       />
 
       <div className="max-w-6xl mx-auto">
-        {/* 헤더 섹션 */}
         <header className="mb-12 flex flex-col md:flex-row md:items-end justify-between gap-6 px-4">
           <div className="space-y-2">
             <h1 className="text-4xl font-black tracking-tighter text-gray-900">
@@ -191,7 +221,6 @@ export default function MyProfilePage() {
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* 왼쪽 사이드바: 프로필 요약 카드 */}
           <aside className="lg:col-span-4 space-y-6">
             <div className="bg-white rounded-[2.5rem] border border-gray-100 p-10 shadow-sm text-center">
               <div className="w-24 h-24 bg-blue-50 text-blue-600 rounded-[2rem] flex items-center justify-center text-3xl font-black mx-auto mb-6 border-4 border-white shadow-lg">
@@ -200,7 +229,7 @@ export default function MyProfilePage() {
               <h2 className="text-2xl font-black text-gray-900 mb-1">
                 {profile.name || "회원님"}
               </h2>
-              <span className="text-sm  text-gray-900">
+              <span className="text-sm text-gray-900">
                 {profile.email || "이메일 정보가 없습니다."}
               </span>
               <p className="text-sm font-bold text-gray-600 mt-1 mb-8 tracking-wide">
@@ -239,9 +268,7 @@ export default function MyProfilePage() {
             </div>
           </aside>
 
-          {/* 오른쪽: 상세 정보 및 히스토리 */}
           <section className="lg:col-span-8 space-y-8">
-            {/* 1. 기본 인적사항 섹션 */}
             <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm p-8 md:p-12 space-y-12">
               <div className="space-y-8">
                 <div className="flex items-center gap-3">
@@ -390,10 +417,8 @@ export default function MyProfilePage() {
               </div>
             </div>
 
-            {/* 2. 나의 소속 및 신청 현황 섹션 (새로 추가됨) */}
             <div className="bg-white rounded-[2.5rem] border border-gray-100 shadow-sm overflow-hidden">
               <div className="p-8 md:p-12 space-y-12">
-                {/* 2-1. 현재 소속 단체 */}
                 <div className="space-y-6">
                   <div className="flex items-center gap-3">
                     <span className="w-1.5 h-6 bg-green-500 rounded-full" />
@@ -401,7 +426,6 @@ export default function MyProfilePage() {
                       나의 소속 단체
                     </h3>
                   </div>
-
                   {memberships.length > 0 ? (
                     <div className="grid grid-cols-1 gap-4">
                       {memberships.map((mem) => (
@@ -443,7 +467,6 @@ export default function MyProfilePage() {
                   )}
                 </div>
 
-                {/* 2-2. 신청 진행 현황 */}
                 <div className="space-y-6 border-t border-gray-50 pt-12">
                   <div className="flex items-center gap-3">
                     <span className="w-1.5 h-6 bg-amber-500 rounded-full" />
@@ -451,7 +474,6 @@ export default function MyProfilePage() {
                       선수 등록 신청 현황
                     </h3>
                   </div>
-
                   {applications.length > 0 ? (
                     <div className="grid grid-cols-1 gap-4">
                       {applications.map((app) => (
@@ -503,6 +525,16 @@ export default function MyProfilePage() {
                   )}
                 </div>
               </div>
+            </div>
+            {/* 탈퇴 버튼 추가 */}
+            <div className="flex justify-end">
+              <button
+                onClick={handleWithdraw}
+                disabled={isWithdrawing}
+                className=" text-[11px] font-bold text-gray-500 hover:text-red-400 transition-colors underline underline-offset-4 disabled:opacity-50"
+              >
+                {isWithdrawing ? "탈퇴 처리 중..." : "회원 탈퇴하기"}
+              </button>
             </div>
           </section>
         </div>

@@ -27,8 +27,12 @@ export async function deleteFiles(paths = []) {
   if (!paths.length) return;
 
   const cleanedPaths = paths.map((p) =>
-    typeof p === "string" ? p.replace(/^\/+/, "") : p.path.replace(/^\/+/, ""),
+    typeof p === "string"
+      ? p?.replace(/^\/+/, "")
+      : p?.path?.replace(/^\/+/, ""),
   );
+
+  if (!cleanedPaths.length) return;
 
   const { data, error } = await supabase.storage
     .from("public-bucket")
@@ -37,7 +41,7 @@ export async function deleteFiles(paths = []) {
   console.log("삭제 대상:", cleanedPaths);
   if (error) {
     console.error("삭제 실패:", error.message);
-    throw error;
+    // throw error;
   } else {
     console.log("삭제 성공:", data);
   }

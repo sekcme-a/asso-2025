@@ -38,7 +38,7 @@ export default function OrgAuthManagementPage() {
       .eq("org_id", orgId)
       .eq("status", "pending");
     // 3. 현재 관리자 목록 조회 (profiles 테이블 Join)
-    const { data: adminData } = await supabase
+    const { data: adminData, error: asdf } = await supabase
       .from("org_admins")
       .select(
         `
@@ -49,6 +49,7 @@ export default function OrgAuthManagementPage() {
       `,
       )
       .eq("org_id", orgId);
+    console.log(asdf);
 
     setApplications(appData || []);
     setCurrentAdmins(adminData || []);
@@ -70,6 +71,7 @@ export default function OrgAuthManagementPage() {
     const { error: adminError } = await supabase
       .from("org_admins")
       .insert({ org_id: orgId, user_id: app.user_id });
+    console.log(adminError);
     if (adminError) return alert("승인 처리 중 오류가 발생했습니다.");
     await supabase
       .from("org_applications")
