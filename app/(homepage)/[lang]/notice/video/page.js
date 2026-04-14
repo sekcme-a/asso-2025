@@ -3,7 +3,7 @@ import VideoList from "@/app/(homepage)/(korean)/notice/video/VideoList";
 import { createMetadata } from "@/utils/metadata";
 export const metadata = createMetadata({
   title: "동영상갤러리",
-  description: `동영상갤러리 - 대한생활체육회의 활동 영상자료 모음입니다.`,
+  description: "Photo Gallery - View the activity photos and event galleries of KSFAA.",
   url: `/notice/video`,
 });
 export default async function Photo({ params, searchParams }) {
