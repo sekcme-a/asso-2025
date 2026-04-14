@@ -1,4 +1,5 @@
 import SubHero from "@/app/(homepage)/(korean)/info/components/SubHero";
+import VideoList from "@/app/(homepage)/(korean)/notice/video/VideoList";
 import { createMetadata } from "@/utils/metadata";
 export const metadata = createMetadata({
   title: "동영상갤러리",
