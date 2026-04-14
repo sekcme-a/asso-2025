@@ -1,5 +1,5 @@
 import SubHero from "@/app/(homepage)/(korean)/info/components/SubHero";
-import MediaList from "@/app/(homepage)/(korean)/notice/photo/PhotoList";
+import PhotoList from "@/app/(homepage)/(korean)/notice/photo/PhotoList";
 import { createMetadata } from "@/utils/metadata";
 
 export const metadata = createMetadata({
