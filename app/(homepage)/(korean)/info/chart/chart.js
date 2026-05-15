@@ -190,7 +190,7 @@ export const CHART = [
             detail: "사무처장",
             detailEn: "Secretariat Director",
           },
-          { name: "서찬수", detail: "사업단장", detailEn: "Project Director" },
+          { name: "이기현", detail: "사업단장", detailEn: "Project Director" },
           {
             name: "이명교",
             detail: "대외협력단장",
