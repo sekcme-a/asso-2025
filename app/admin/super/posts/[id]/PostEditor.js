@@ -60,6 +60,7 @@ export default function PostEditor({ post = null }) {
 2. 본문(Content HTML)의 경우, HTML 태그 구조는 절대 건드리지 마세요. 
 3. 태그 내부의 텍스트(문구)들만 자연스러운 영어로 번역하세요.
 4. 결과물은 반드시 아래 형식을 지켜서 출력하세요.
+5. 결과물은 코드박스에 넣어서 복사가 가능하도록 하세요.
    - Title EN: [번역된 제목]
    - Content EN: [번역된 HTML]
 
