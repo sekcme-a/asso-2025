@@ -105,6 +105,7 @@ export const CHART = [
           { name: "이종각", detail: "부총재", detailEn: "Vice President" },
           { name: "김명길", detail: "부총재", detailEn: "Vice President" },
           { name: "박진웅", detail: "부총재", detailEn: "Vice President" },
+          { name: "이보람", detail: "부총재", detailEn: "Vice President" },
         ],
       },
     ],
