@@ -44,11 +44,11 @@ const StatusPage = ({ statusList }) => {
         <div
           className="absolute inset-0 opacity-[0.03] bg-[url('/images/noise.png')] pointer-events-none"
           aria-hidden="true"
-        />
+        ></div>
         <div
           className="absolute inset-0 [background-image:linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] [background-size:80px_80px] pointer-events-none"
           aria-hidden="true"
-        />
+        ></div>
 
         <div className="max-w-7xl mx-auto relative z-10">
           {/* HEADER: SubHero에 h1이 있으므로 여기는 h2로 설정 */}
@@ -121,6 +121,7 @@ const StatusPage = ({ statusList }) => {
                                 }
                                 alt={`${memberName} - ${positionTitle}`}
                                 fill
+                                unoptimized // 💡 이 속성이 추가되어 Vercel 최적화(402 에러)를 우회합니다.
                                 className="object-cover transition-transform duration-700 group-hover:scale-110"
                               />
                             </div>
@@ -162,4 +163,4 @@ const StatusPage = ({ statusList }) => {
   );
 };
 
-export default StatusPage;
+export default StatusPage;  
