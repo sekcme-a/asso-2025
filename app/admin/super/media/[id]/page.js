@@ -39,7 +39,7 @@ export default function MediaEditPage() {
       return;
     }
 
-    const prompt = `다음 뉴스 정보를 영어로 번역해줘. 결과는 반드시 "Press Name: [언론사영문명]", "News Title: [제목영문명]" 형식으로만 출력해줘.\n\n언론사명: ${form.press_name}\n뉴스제목: ${form.news_title}`;
+    const prompt = `다음 뉴스 정보를 영어로 번역해줘. 결과는 반드시 "Press Name: [언론사영문명]", "News Title: [제목영문명]" 형식으로만 출력해줘, 복사가 안되니까 코드박스에 넣어서 복사가 가능하게 해줘 \n\n언론사명: ${form.press_name}\n뉴스제목: ${form.news_title}`;
 
     // 클립보드 복사
     navigator.clipboard.writeText(prompt).then(() => {
