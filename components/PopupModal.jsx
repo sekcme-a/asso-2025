@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation';
 
 export default function PopupModal() {
+  // 👇 팝업을 잠시 완전히 끄고 싶을 때 여기에 추가해 두세요!
+  return null;
   const [isOpen, setIsOpen] = useState(false);
   const [todayClose, setTodayClose] = useState(false);
   const pathname = usePathname();
