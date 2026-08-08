@@ -87,7 +87,7 @@ export default function HomeTop() {
               className="text-base md:text-xl lg:text-2xl font-bold text-gray-400 max-w-xl leading-relaxed lg:leading-snug break-keep mb-10 lg:mb-16"
             >
               {t(
-                "대한생활체육회는 모든 국민이 운동하는 대한민국을 목표로 더 건강한 내일을 설계합니다.",
+                "대한생활체육회는 모든 국민이 운동하는 대한민국을 목표로 더 건강한 내일을 설계ㅂㅈㄷㅈㅂㄷㅂㅈㄷㅂㅈ합니다.",
                 "Korea Sports For All Athletic Association designs a healthier tomorrow with the goal of a nation where everyone exercises.",
               )}
             </motion.p>
