@@ -5,6 +5,7 @@ import Footer from "@/components/Footer";
 
 import metadata from "../metadata";
 import ScrollToTop from "@/components/ScrollToTop";
+//import PopupModal from "@/components/PopupModal"; // 팝업 컴포넌트 불러오기
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -40,7 +41,7 @@ export default function RootLayout({ children }) {
           <ScrollToTop />
         </main>
         <Footer />
-        <PopupModal /> {/* 여기에 팝업 컴포넌트 추가 */}
+        {/* <PopupModal /> */}  {/* <-- 이 태그를 지우거나 주석 처리 */}
       </body>
     </html>
   );
