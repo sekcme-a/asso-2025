@@ -41,7 +41,14 @@ export default function AdminOrgPage() {
     fetchOrgs();
   }, []);
 
-  // 2. 모달 열기/닫기 처리
+  // 단체 상세 설정 페이지로 이동
+  // 실제 파일 위치: app/admin/(admin)/organizations/[orgId]/page.js
+  // (admin) route group은 URL에 나타나지 않으므로 실제 주소는 /admin/organizations/[orgId] 입니다.
+  const goToDetail = (id) => {
+    router.push(`/admin/organizations/${id}`);
+  };
+
+  // 2. 모달 열기/닫기 처리 (신규 등록 전용)
   const handleOpenModal = (org = null) => {
     if (org) {
       setEditingOrg(org);
@@ -120,7 +127,8 @@ export default function AdminOrgPage() {
               Organization Management
             </h1>
             <p className="text-sm font-bold text-gray-400">
-              대한생활체육회 산하 단체 정보를 관리합니다.
+              대한생활체육회 산하 단체 정보를 관리합니다. 단체를 클릭하면
+              상세 설정 페이지로 이동합니다.
             </p>
           </div>
           <button
@@ -164,7 +172,8 @@ export default function AdminOrgPage() {
                     orgs.map((org) => (
                       <tr
                         key={org.id}
-                        className="hover:bg-gray-50/30 transition-colors group"
+                        onClick={() => goToDetail(org.id)}
+                        className="hover:bg-gray-50/30 transition-colors group cursor-pointer"
                       >
                         <td className="px-8 py-6">
                           <span className="font-black text-gray-900 group-hover:text-blue-600 transition-colors">
@@ -182,11 +191,12 @@ export default function AdminOrgPage() {
                             {org.location}
                           </span>
                         </td>
-                        <td className="px-8 py-6 text-right space-x-3">
+                        <td
+                          className="px-8 py-6 text-right space-x-3"
+                          onClick={(e) => e.stopPropagation()}
+                        >
                           <button
-                            onClick={() => {
-                              router.push(`/admin/organizations/${org.id}`);
-                            }}
+                            onClick={() => goToDetail(org.id)}
                             className="text-xs font-black text-blue-600 hover:bg-blue-50 px-3 py-1.5 rounded-lg transition-colors"
                           >
                             수정
@@ -217,7 +227,7 @@ export default function AdminOrgPage() {
         </div>
       </main>
 
-      {/* 모달 UI (이전과 동일하지만 로딩 상태 대응 추가) */}
+      {/* 모달 UI: 신규 단체 등록 전용 (기존 단체 수정은 상세 설정 페이지에서 진행) */}
       {isModalOpen && (
         <div className="fixed inset-0 z-[60] flex items-center justify-center p-6 bg-gray-950/20 backdrop-blur-sm">
           <div className="bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-200">
