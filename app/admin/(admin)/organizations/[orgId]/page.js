@@ -22,6 +22,7 @@ export default function OrgDetailManagementPage() {
     contact: "",
     location: "",
     etc: "",
+    website_url: "",
   });
 
   const DEFAULT_LOGO = "/images/logo-circle.png";
@@ -44,6 +45,7 @@ export default function OrgDetailManagementPage() {
           contact: data.contact || "",
           location: data.location || "",
           etc: data.etc || "",
+          website_url: data.website_url || "",
         });
       }
       setLoading(false);
@@ -159,7 +161,7 @@ export default function OrgDetailManagementPage() {
 
         <form onSubmit={handleUpdate} className="space-y-8">
           <div className="bg-white rounded-[2.5rem] border border-gray-100 p-10 shadow-sm space-y-10">
-            {/* 로고 업로드/삭제 섹션 */}
+            {/* 로고 업로드/삭제 섹션 + 홈페이지 주소 */}
             <div className="flex flex-col md:flex-row gap-8 items-center md:items-start">
               <div className="relative group w-32 h-32 bg-gray-50 rounded-[2rem] border-2 border-dashed border-gray-200 flex items-center justify-center overflow-hidden shrink-0">
                 <img
@@ -212,6 +214,25 @@ export default function OrgDetailManagementPage() {
                 </div>
                 <p className="text-[10px] font-bold text-gray-400 ml-1 italic">
                   * 가급적 정사각형 비율의 이미지를 권장합니다.
+                </p>
+              </div>
+
+              <div className="flex-1 space-y-2 w-full">
+                <label className="text-[11px] font-black text-gray-400 uppercase tracking-widest ml-1">
+                  홈페이지 주소
+                </label>
+                <input
+                  type="url"
+                  placeholder="https://example.com"
+                  value={formData.website_url}
+                  onChange={(e) =>
+                    setFormData({ ...formData, website_url: e.target.value })
+                  }
+                  className="w-full bg-gray-50 border-none rounded-2xl px-6 py-4 font-bold text-sm focus:ring-2 ring-blue-100 outline-none"
+                />
+                <p className="text-[10px] font-bold text-gray-400 ml-1 italic">
+                  * 비워두면 사용자 페이지에서 홈페이지 방문 버튼이 안내
+                  팝업으로 대체됩니다.
                 </p>
               </div>
             </div>
