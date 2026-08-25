@@ -18,6 +18,7 @@ export default function OrganizationDetail({
   const [announcements] = useState(initialAnnouncements);
   const [myApplications, setMyApplications] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showNoWebsiteModal, setShowNoWebsiteModal] = useState(false);
 
   const t = (ko, en) => (isEnglish ? en : ko);
 
@@ -78,6 +79,15 @@ export default function OrganizationDetail({
     }
 
     router.push(isEnglish ? `/en/team/apply/${orgId}` : `/team/apply/${orgId}`);
+  };
+
+  // 단체 홈페이지 방문 버튼 클릭 핸들러
+  const handleVisitWebsite = () => {
+    if (org.website_url) {
+      window.open(org.website_url, "_blank", "noopener,noreferrer");
+    } else {
+      setShowNoWebsiteModal(true);
+    }
   };
 
   if (!org)
@@ -148,12 +158,21 @@ export default function OrganizationDetail({
               </div>
 
               <div className="pt-4 flex flex-col items-center md:items-start gap-4">
-                <button
-                  onClick={handleApplyClick}
-                  className="bg-blue-600 text-white font-black px-8 py-2 rounded-2xl shadow-lg shadow-blue-100 hover:bg-blue-700 transition-all active:scale-95"
-                >
-                  {t("경기인 신청하기", "Apply as Athlete")}
-                </button>
+                <div className="flex flex-col md:flex-row items-center md:items-start gap-3">
+                  <button
+                    onClick={handleApplyClick}
+                    className="bg-blue-600 text-white font-black px-8 py-2 rounded-2xl shadow-lg shadow-blue-100 hover:bg-blue-700 transition-all active:scale-95"
+                  >
+                    {t("경기인 신청하기", "Apply as Athlete")}
+                  </button>
+
+                  <button
+                    onClick={handleVisitWebsite}
+                    className="bg-white text-blue-600 font-black px-8 py-2 rounded-2xl border-2 border-blue-600 hover:bg-blue-50 transition-all active:scale-95"
+                  >
+                    {t("홈페이지 방문", "Visit Website")}
+                  </button>
+                </div>
 
                 {myApplications.length > 0 && (
                   <div className="w-full max-w-sm space-y-2 mt-2">
@@ -280,6 +299,55 @@ export default function OrganizationDetail({
           </div>
         </div>
       </div>
+
+      {/* 홈페이지 미등록 안내 모달 */}
+      {showNoWebsiteModal && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-6"
+          onClick={() => setShowNoWebsiteModal(false)}
+        >
+          <div
+            className="bg-white rounded-[2rem] shadow-2xl max-w-sm w-full p-8 text-center space-y-5"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="w-16 h-16 mx-auto rounded-2xl bg-blue-50 flex items-center justify-center">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="w-8 h-8 text-blue-500"
+              >
+                <circle cx="12" cy="12" r="9" />
+                <path d="M3.6 9h16.8M3.6 15h16.8M11.5 3a17 17 0 0 0 0 18M12.5 3a17 17 0 0 1 0 18" />
+                <line x1="5" y1="19" x2="19" y2="5" />
+              </svg>
+            </div>
+
+            <div className="space-y-1">
+              <h3 className="text-lg font-black text-gray-900 tracking-tight">
+                {t("단체 홈페이지가 없습니다", "No Website Registered")}
+              </h3>
+              <p className="text-sm font-bold text-gray-400 leading-relaxed">
+                {t(
+                  "아직 등록된 홈페이지 주소가 없어요.",
+                  "This organization hasn't registered a website yet.",
+                )}
+              </p>
+            </div>
+
+            <button
+              onClick={() => setShowNoWebsiteModal(false)}
+              className="w-full bg-blue-600 text-white font-black py-3 rounded-2xl hover:bg-blue-700 transition-all active:scale-[0.98]"
+            >
+              {t("확인", "OK")}
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
